@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panduan Metode Sampling Skripsi</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#F5F3EE; --surface:#FFF; --surface2:#EDEAE3; --border:#DDD9CF;
+  --text:#1C1917; --text2:#6B6560; --text3:#A8A39C;
+  --accent:#3D3580; --accent-light:#EEEDFC; --accent-mid:#6B64C0;
+  --green:#2A5C45; --green-light:#E6F2EC;
+  --amber:#9A5C1A; --amber-light:#FDF0E0;
+  --red:#8B2B2B; --red-light:#FCEAEA;
+  --blue:#1E4E7A; --blue-light:#E6EFF8;
+  --teal:#2C6B6B; --teal-light:#E8F5F5;
+  --radius:13px; --radius-sm:8px;
+  --shadow:0 1px 3px rgba(0,0,0,0.06),0 1px 2px rgba(0,0,0,0.04);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6;}
+
+/* NAV */
+nav{background:var(--surface);border-bottom:1px solid var(--border);padding:10px 2rem;display:flex;align-items:center;gap:8px;font-size:13px;flex-wrap:wrap;}
+nav a{color:var(--accent);text-decoration:none;font-weight:500;}
+nav a:hover{text-decoration:underline;}
+nav span{color:var(--text3);}
+
+/* HEADER */
+header{background:linear-gradient(135deg,#2D2670 0%,#3D3580 55%,#5B4FA0 100%);padding:3rem 2rem 2.8rem;text-align:center;position:relative;overflow:hidden;}
+header::before{content:'';position:absolute;top:-70px;right:-70px;width:240px;height:240px;border-radius:50%;background:rgba(255,255,255,0.05);}
+header::after{content:'';position:absolute;bottom:-50px;left:-50px;width:170px;height:170px;border-radius:50%;background:rgba(255,255,255,0.04);}
+.h-eye{font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:rgba(255,255,255,0.42);margin-bottom:10px;}
+header h1{font-family:'Instrument Serif',serif;font-size:clamp(1.9rem,4.5vw,3rem);font-weight:400;color:#fff;line-height:1.2;margin-bottom:12px;}
+header h1 em{font-style:italic;color:rgba(255,255,255,0.62);}
+header p{font-size:14px;color:rgba(255,255,255,0.52);max-width:520px;margin:0 auto;}
+
+/* TABS */
+.tabs-wrap{background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:20;}
+.tabs{max-width:960px;margin:0 auto;display:flex;padding:0 1.5rem;overflow-x:auto;}
+.tab{padding:13px 18px;font-size:13px;font-weight:500;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap;user-select:none;}
+.tab:hover{color:var(--text);}
+.tab.active{color:var(--accent);border-bottom-color:var(--accent);}
+
+main{max-width:960px;margin:0 auto;padding:2rem 1.5rem 5rem;}
+.tab-panel{display:none;}
+.tab-panel.active{display:block;}
+
+/* PROGRESS STEPPER */
+.stepper{display:flex;align-items:center;margin-bottom:2rem;background:var(--surface);border:1px solid var(--border);border-radius:40px;padding:5px;gap:2px;overflow-x:auto;}
+.step{flex:1;text-align:center;padding:7px 8px;border-radius:30px;font-size:11px;font-weight:500;color:var(--text3);transition:all .2s;white-space:nowrap;min-width:80px;}
+.step span{display:block;font-size:9px;opacity:.7;margin-top:1px;}
+.step.done{background:var(--accent);color:#fff;}
+.step.active{background:var(--accent-light);color:var(--accent);}
+
+/* FILTER CARDS */
+.filter-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.4rem 1.5rem;margin-bottom:10px;box-shadow:var(--shadow);transition:all .2s;}
+.filter-card.active-card{border-color:var(--accent);box-shadow:0 0 0 3px rgba(61,53,128,.09);}
+.filter-card.disabled{opacity:.45;pointer-events:none;}
+.fmeta{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.fnum{width:26px;height:26px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:var(--text2);flex-shrink:0;transition:all .2s;}
+.fnum.done{background:var(--accent);border-color:var(--accent);color:#fff;}
+.fnum.skip{background:var(--teal);border-color:var(--teal);color:#fff;}
+.ftag{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);}
+.fskip-note{font-size:11px;color:var(--teal);margin-left:auto;background:var(--teal-light);padding:2px 8px;border-radius:10px;}
+.fq{font-size:14.5px;font-weight:500;color:var(--text);margin-bottom:12px;line-height:1.5;}
+.pills{display:flex;flex-wrap:wrap;gap:8px;}
+.pill{cursor:pointer;padding:7px 14px;border-radius:30px;border:1px solid var(--border);font-size:13px;color:var(--text2);background:var(--bg);transition:all .15s;user-select:none;}
+.pill:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-light);}
+.pill.active{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:500;}
+.pill.skip-pill{background:var(--teal-light);border-color:var(--teal);color:var(--teal);font-size:12px;}
+
+/* RESET */
+.reset-btn{font-size:12px;color:var(--text3);background:none;border:1px solid var(--border);border-radius:20px;padding:5px 14px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s;margin-bottom:1.5rem;}
+.reset-btn:hover{background:var(--surface2);color:var(--text);}
+
+/* WARN / INFO */
+.warn{background:var(--amber-light);border:1px solid #DEB97A;border-left:3px solid var(--amber);border-radius:var(--radius-sm);padding:11px 15px;font-size:13px;color:#7A4800;margin-bottom:1.2rem;line-height:1.6;}
+.info{background:var(--accent-light);border:1px solid #C0BCE8;border-left:3px solid var(--accent);border-radius:var(--radius-sm);padding:11px 15px;font-size:13px;color:#2A2560;margin-bottom:1.2rem;line-height:1.6;}
+.success{background:var(--green-light);border:1px solid #8ABBA8;border-left:3px solid var(--green);border-radius:var(--radius-sm);padding:11px 15px;font-size:13px;color:#1A3D2A;margin-bottom:1.2rem;line-height:1.6;}
+
+/* DIVIDER */
+.divider{display:flex;align-items:center;gap:12px;margin:1.8rem 0 1.4rem;}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border);}
+.divider span{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);white-space:nowrap;}
+
+/* RESULT */
+.rh{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:14px;gap:12px;flex-wrap:wrap;}
+.rt{font-family:'Instrument Serif',serif;font-size:1.25rem;font-weight:400;}
+.rc{font-size:12px;color:var(--text3);background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:3px 10px;}
+.rcards{display:flex;flex-direction:column;gap:16px;}
+.rcard{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);}
+.rcard-hd{padding:15px 20px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+.rcard-name{font-weight:600;font-size:15px;color:var(--text);}
+.rcard-sub{font-size:12px;color:var(--text3);margin-top:2px;}
+.rgrid{display:grid;grid-template-columns:1fr 1fr;}
+.rsec{padding:13px 18px;border-right:1px solid var(--border);border-bottom:1px solid var(--border);}
+.rsec:nth-child(even){border-right:none;}
+.rsec.full{grid-column:1/-1;border-right:none;border-bottom:none;}
+.rsec.fullb{grid-column:1/-1;border-right:none;}
+.slabel{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:5px;}
+.scontent{font-size:13px;color:var(--text2);line-height:1.65;}
+
+/* JUDUL */
+.jlist{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:5px;}
+.jlist li{font-size:12.5px;color:var(--text2);padding:7px 12px 7px 28px;background:var(--bg);border-radius:var(--radius-sm);border:1px solid var(--border);line-height:1.5;position:relative;}
+.jlist li::before{content:attr(data-n);position:absolute;left:10px;top:8px;font-size:10px;font-weight:700;color:var(--accent);opacity:.6;}
+
+/* BADGES */
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;white-space:nowrap;}
+.b-prob{background:var(--green-light);color:var(--green);}
+.b-nonprob{background:var(--amber-light);color:var(--amber);}
+.b-census{background:var(--blue-light);color:var(--blue);}
+.b-mixed{background:var(--teal-light);color:var(--teal);}
+
+/* EMPTY */
+.empty{text-align:center;padding:3rem 1rem;color:var(--text3);}
+.empty .ico{font-size:2.5rem;margin-bottom:10px;opacity:.35;}
+.empty p{font-size:14px;}
+
+/* KALKULATOR */
+.calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:1.5rem;}
+.calc-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;box-shadow:var(--shadow);}
+.calc-card h3{font-family:'Instrument Serif',serif;font-size:1.1rem;margin-bottom:4px;}
+.calc-desc{font-size:12px;color:var(--text3);margin-bottom:16px;line-height:1.5;}
+.igroup{margin-bottom:12px;}
+.igroup label{display:block;font-size:12px;font-weight:600;color:var(--text2);margin-bottom:5px;}
+.igroup input,.igroup select{width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:14px;font-family:'DM Sans',sans-serif;color:var(--text);background:var(--bg);outline:none;transition:border-color .15s;}
+.igroup input:focus,.igroup select:focus{border-color:var(--accent);background:var(--surface);}
+.calc-btn{width:100%;padding:10px;border:none;border-radius:var(--radius-sm);background:var(--accent);color:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:opacity .15s;}
+.calc-btn:hover{opacity:.88;}
+.cresult{margin-top:14px;padding:14px;border-radius:var(--radius-sm);background:var(--accent-light);border:1px solid rgba(61,53,128,.15);display:none;}
+.cresult.show{display:block;}
+.n-val{font-size:2.2rem;font-weight:700;color:var(--accent);line-height:1;margin-bottom:4px;}
+.n-label{font-size:12px;color:var(--text2);}
+.n-note{font-size:12px;color:var(--text3);margin-top:8px;line-height:1.5;}
+
+/* COMPARISON TABLE */
+.ctable{width:100%;border-collapse:collapse;font-size:13px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);}
+.ctable th{background:var(--surface2);padding:10px 14px;text-align:left;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text3);border-bottom:1px solid var(--border);}
+.ctable td{padding:11px 14px;border-bottom:1px solid var(--border);color:var(--text2);vertical-align:top;line-height:1.5;}
+.ctable tr:last-child td{border-bottom:none;}
+.ctable tr:hover td{background:var(--bg);}
+.ctable td:first-child{font-weight:500;color:var(--text);}
+
+/* NON-RESPONSE */
+.nrb-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:1rem;}
+.nrb-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px;box-shadow:var(--shadow);}
+.nrb-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:6px;}
+.nrb-body{font-size:12.5px;color:var(--text2);line-height:1.6;}
+
+.legend{display:flex;flex-wrap:wrap;gap:10px;margin-top:1.2rem;}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text2);}
+
+footer{text-align:center;padding:2rem;font-size:12px;color:var(--text3);border-top:1px solid var(--border);margin-top:1rem;}
+
+@media(max-width:640px){
+  .calc-grid{grid-template-columns:1fr;}
+  .rgrid{grid-template-columns:1fr;}
+  .rsec{border-right:none!important;}
+  .nrb-grid{grid-template-columns:1fr;}
+  .stepper{gap:2px;}
+  .step{min-width:60px;font-size:10px;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html">🔬 Alat Analisis</a>
+  <span>/</span>
+  <span style="color:var(--text);font-weight:500">📊 Metode Sampling</span>
+</nav>
+
+<header>
+  <div class="h-eye">Metodologi Penelitian</div>
+  <h1>Panduan Metode <em>Sampling</em></h1>
+  <p>Sistem filter 6 lapis berbasis keputusan hierarkis untuk menemukan metode sampling terbaik, menghitung jumlah sampel, dan melihat contoh judul skripsi.</p>
+</header>
+
+<div class="tabs-wrap">
+  <div class="tabs">
+    <div class="tab active" data-tab="filter">🎯 Pilih Metode Sampling</div>
+    <div class="tab" data-tab="kalkulator">🧮 Kalkulator Sampel</div>
+    <div class="tab" data-tab="nonresponse">⚠ Non-Response Bias</div>
+    <div class="tab" data-tab="panduan">📋 Perbandingan Lengkap</div>
+  </div>
+</div>
+
+<main>
+
+<!-- ══════════════ TAB 1: FILTER ══════════════ -->
+<div class="tab-panel active" id="tab-filter">
+
+  <div class="info" style="margin-bottom:1.5rem">
+    <strong>Arsitektur Filter 6 Lapis (Hierarkis):</strong> Jawab filter secara berurutan. Beberapa filter akan otomatis dilewati (<em>skip</em>) jika tidak relevan dengan pilihan sebelumnya — ini adalah desain yang disengaja agar hasilnya lebih akurat.
+  </div>
+
+  <div class="stepper" id="stepper">
+    <div class="step active" id="st0">L0<span>Paradigma</span></div>
+    <div class="step" id="st1">L1<span>Populasi</span></div>
+    <div class="step" id="st2">L2<span>Struktur</span></div>
+    <div class="step" id="st3">L3<span>Responden</span></div>
+    <div class="step" id="st4">L4<span>Kapasitas</span></div>
+    <div class="step" id="st5">L5<span>Inferensial</span></div>
+  </div>
+
+  <button class="reset-btn" onclick="resetAll()">↺ Reset semua filter</button>
+
+  <!-- LAYER 0 -->
+  <div class="filter-card active-card" id="fc0">
+    <div class="fmeta">
+      <div class="fnum" id="fn0">0</div>
+      <div class="ftag">Layer 0 — Paradigma Penelitian (Gate Pertama)</div>
+    </div>
+    <div class="fq">Apa paradigma utama penelitian skripsimu?</div>
+    <div class="pills" id="fp0"></div>
+  </div>
+
+  <!-- LAYER 1 -->
+  <div class="filter-card disabled" id="fc1">
+    <div class="fmeta">
+      <div class="fnum" id="fn1">1</div>
+      <div class="ftag">Layer 1 — Ketersediaan & Ukuran Populasi</div>
+    </div>
+    <div class="fq">Bagaimana kondisi daftar populasi (sampling frame) dan ukurannya?</div>
+    <div class="pills" id="fp1"></div>
+  </div>
+
+  <!-- LAYER 2 -->
+  <div class="filter-card disabled" id="fc2">
+    <div class="fmeta">
+      <div class="fnum" id="fn2">2</div>
+      <div class="ftag">Layer 2 — Struktur & Sebaran Populasi</div>
+    </div>
+    <div class="fq">Bagaimana karakteristik internal dan sebaran geografis populasimu?</div>
+    <div class="pills" id="fp2"></div>
+  </div>
+
+  <!-- LAYER 3 -->
+  <div class="filter-card disabled" id="fc3">
+    <div class="fmeta">
+      <div class="fnum" id="fn3">3</div>
+      <div class="ftag">Layer 3 — Karakteristik & Aksesibilitas Responden</div>
+    </div>
+    <div class="fq">Bagaimana karakteristik target responden penelitianmu?</div>
+    <div class="pills" id="fp3"></div>
+  </div>
+
+  <!-- LAYER 4 -->
+  <div class="filter-card disabled" id="fc4">
+    <div class="fmeta">
+      <div class="fnum" id="fn4">4</div>
+      <div class="ftag">Layer 4 — Kapasitas & Konteks Peneliti</div>
+    </div>
+    <div class="fq">Bagaimana kondisi sumber daya dan konteks penelitianmu sebagai mahasiswa skripsi?</div>
+    <div class="pills" id="fp4"></div>
+  </div>
+
+  <!-- LAYER 5 -->
+  <div class="filter-card disabled" id="fc5">
+    <div class="fmeta">
+      <div class="fnum" id="fn5">5</div>
+      <div class="ftag">Layer 5 — Tujuan Inferensial (Validasi Akhir)</div>
+    </div>
+    <div class="fq">Seberapa jauh hasil penelitianmu perlu digeneralisasikan?</div>
+    <div class="pills" id="fp5"></div>
+  </div>
+
+  <div class="divider"><span>Rekomendasi Metode Sampling</span></div>
+  <div id="warn-area"></div>
+  <div id="result-area">
+    <div class="empty"><div class="ico">⬆</div><p>Jawab filter di atas secara berurutan untuk melihat rekomendasi.</p></div>
+  </div>
+
+  <div class="legend">
+    <div class="legend-item"><span class="badge b-prob">Probability</span>Setiap anggota punya peluang terpilih</div>
+    <div class="legend-item"><span class="badge b-nonprob">Non-Probability</span>Tidak semua punya peluang terpilih</div>
+    <div class="legend-item"><span class="badge b-census">Sensus</span>Ambil semua anggota populasi</div>
+    <div class="legend-item"><span class="badge b-mixed">Kombinasi</span>Gabungan dua pendekatan</div>
+  </div>
+</div>
+
+<!-- ══════════════ TAB 2: KALKULATOR ══════════════ -->
+<div class="tab-panel" id="tab-kalkulator">
+  <div class="section-head" style="margin-bottom:1.5rem">
+    <h2 style="font-family:'Instrument Serif',serif;font-size:1.6rem;font-weight:400;margin-bottom:6px">Kalkulator Jumlah Sampel</h2>
+    <p style="font-size:13.5px;color:var(--text2)">Pilih rumus yang sesuai dengan metode sampling dan metode analisis yang kamu gunakan.</p>
+  </div>
+
+  <div class="calc-grid">
+    <div class="calc-card">
+      <h3>Rumus Slovin</h3>
+      <div class="calc-desc">Populasi diketahui. Paling umum di skripsi Indonesia. Asumsi: maksimum variabilitas (p=0.5), Z=1.96 dikunci.<br><span style="color:var(--amber);font-weight:600">⚠ Keterbatasan:</span> Slovin tidak memiliki derivasi statistik formal yang bisa dilacak (Tejada & Punzalan, 2012). Ia mengunci p=0.5 dan Z=1.96 tanpa fleksibilitas. Untuk presisi lebih tinggi, gunakan <strong>Rumus Cochran</strong> di sebelah kanan.</div>
+      <div class="igroup"><label>Ukuran Populasi (N)</label><input type="number" id="sl-N" placeholder="Contoh: 500" min="1"></div>
+      <div class="igroup"><label>Margin Error (e)</label>
+        <select id="sl-e">
+          <option value="0.05">5% — presisi tinggi (disarankan)</option>
+          <option value="0.10">10% — presisi sedang</option>
+          <option value="0.01">1% — sangat presisi</option>
+        </select>
+      </div>
+      <button class="calc-btn" onclick="hitungSlovin()">Hitung</button>
+      <div class="cresult" id="sl-r"><div class="n-val" id="sl-n">—</div><div class="n-label">sampel minimum (Slovin)</div><div class="n-note" id="sl-note"></div></div>
+    </div>
+
+    <div class="calc-card">
+      <h3>Rumus Cochran</h3>
+      <div class="calc-desc">Populasi tidak diketahui atau > 100.000. Lebih fleksibel dari Slovin karena bisa mengatur proporsi.</div>
+      <div class="igroup"><label>Tingkat Kepercayaan</label>
+        <select id="co-z">
+          <option value="1.96">95% (Z=1.96) — standar</option>
+          <option value="2.576">99% (Z=2.576) — ketat</option>
+          <option value="1.645">90% (Z=1.645) — longgar</option>
+        </select>
+      </div>
+      <div class="igroup"><label>Proporsi (p) — gunakan 0.5 jika tidak diketahui</label><input type="number" id="co-p" value="0.5" min="0.01" max="0.99" step="0.01"></div>
+      <div class="igroup"><label>Margin Error (e)</label>
+        <select id="co-e">
+          <option value="0.05">5%</option><option value="0.10">10%</option><option value="0.01">1%</option>
+        </select>
+      </div>
+      <button class="calc-btn" onclick="hitungCochran()">Hitung</button>
+      <div class="cresult" id="co-r"><div class="n-val" id="co-n">—</div><div class="n-label">sampel minimum (Cochran)</div><div class="n-note" id="co-note"></div></div>
+    </div>
+
+    <div class="calc-card">
+      <h3>PLS-SEM (SmartPLS)</h3>
+      <div class="calc-desc">Aturan "10 kali" Hair et al. (2017) sebagai <strong>batas minimum mutlak</strong>.<br><span style="color:var(--amber);font-weight:600">⚠ Catatan penting:</span> Hair et al. (2022, 3rd ed.) telah menarik "10× rule" sebagai panduan utama. Kini direkomendasikan menggunakan <strong>power analysis berbasis G*Power</strong> atau fitur power analysis bawaan <strong>SmartPLS 4</strong>. Hasil kalkulator ini adalah batas bawah absolut, bukan target optimal.</div>
+      <div class="igroup"><label>Jalur panah terbanyak menuju satu konstruk</label><input type="number" id="pls-a" placeholder="Contoh: 4" min="1"></div>
+      <div class="igroup"><label>Indikator terbanyak dalam satu konstruk</label><input type="number" id="pls-i" placeholder="Contoh: 5" min="1"></div>
+      <button class="calc-btn" onclick="hitungPLS()">Hitung</button>
+      <div class="cresult" id="pls-r"><div class="n-val" id="pls-n">—</div><div class="n-label">sampel minimum (PLS-SEM)</div><div class="n-note" id="pls-note"></div></div>
+    </div>
+
+    <div class="calc-card">
+      <h3>Regresi Linear Berganda</h3>
+      <div class="calc-desc">Green (1991): N ≥ 50 + 8m. Disesuaikan dengan estimasi G*Power berdasarkan ukuran efek (α=0.05, power=0.80).<br><span style="color:var(--amber);font-weight:600">⚠ Penting:</span> Untuk efek kecil (f²=0.02), n yang dibutuhkan sangat besar (~500+). Selalu verifikasi dengan software G*Power sesungguhnya (Cohen, 1988).</div>
+      <div class="igroup"><label>Jumlah variabel independen (m)</label><input type="number" id="rg-m" placeholder="Contoh: 3" min="1"></div>
+      <div class="igroup"><label>Ukuran efek yang diharapkan</label>
+        <select id="rg-e">
+          <option value="besar">Besar (f²≥0.35) — pengaruh sangat nyata</option>
+          <option value="sedang" selected>Sedang (f²=0.15) — lazim di penelitian sosial</option>
+          <option value="kecil">Kecil (f²=0.02) — pengaruh halus</option>
+        </select>
+      </div>
+      <button class="calc-btn" onclick="hitungReg()">Hitung</button>
+      <div class="cresult" id="rg-r"><div class="n-val" id="rg-n">—</div><div class="n-label">sampel minimum (Regresi)</div><div class="n-note" id="rg-note"></div></div>
+    </div>
+
+    <div class="calc-card">
+      <h3>Stratified Sampling — Proporsi per Strata</h3>
+      <div class="calc-desc">Hitung jumlah sampel per strata secara proporsional setelah total n ditentukan dengan Slovin/Cochran.</div>
+      <div class="igroup"><label>Total sampel (n) dari Slovin/Cochran</label><input type="number" id="st-n" placeholder="Contoh: 120" min="1"></div>
+      <div class="igroup"><label>Ukuran populasi strata ini (Nᵢ)</label><input type="number" id="st-ni" placeholder="Contoh: 150" min="1"></div>
+      <div class="igroup"><label>Total populasi keseluruhan (N)</label><input type="number" id="st-N" placeholder="Contoh: 500" min="1"></div>
+      <button class="calc-btn" onclick="hitungStrat()">Hitung Sampel Strata Ini</button>
+      <div class="cresult" id="st-r"><div class="n-val" id="st-ni-out">—</div><div class="n-label">sampel untuk strata ini (nᵢ)</div><div class="n-note" id="st-note"></div></div>
+    </div>
+
+    <div class="calc-card">
+      <h3>Penyesuaian untuk Populasi Kecil</h3>
+      <div class="calc-desc">Jika n hasil Cochran > 5% dari N, gunakan koreksi finite population correction (FPC).</div>
+      <div class="igroup"><label>n awal (dari Cochran tanpa koreksi)</label><input type="number" id="fp-n0" placeholder="Contoh: 384" min="1"></div>
+      <div class="igroup"><label>Ukuran populasi (N)</label><input type="number" id="fp-N" placeholder="Contoh: 800" min="1"></div>
+      <button class="calc-btn" onclick="hitungFPC()">Hitung Koreksi FPC</button>
+      <div class="cresult" id="fp-r"><div class="n-val" id="fp-n">—</div><div class="n-label">sampel setelah koreksi FPC</div><div class="n-note" id="fp-note"></div></div>
+    </div>
+  </div>
+
+  <div class="divider"><span>Acuan Minimum Sampel per Metode Analisis</span></div>
+  <div style="overflow-x:auto">
+  <table class="ctable">
+    <thead><tr><th>Metode Analisis</th><th>Minimum</th><th>Ideal</th><th>Referensi</th></tr></thead>
+    <tbody>
+      <tr><td>Korelasi Pearson/Spearman</td><td>n ≥ 30</td><td>n ≥ 50–100</td><td>Cohen (1992)</td></tr>
+      <tr><td>Regresi Linear Sederhana</td><td>n ≥ 50</td><td>n ≥ 100</td><td>Green (1991)</td></tr>
+      <tr><td>Regresi Berganda (3 IV)</td><td>n ≥ 74</td><td>n ≥ 150</td><td>Green (1991): 50+8(3)</td></tr>
+      <tr><td>Regresi Logistik</td><td>n ≥ 50, 10/kategori</td><td>n ≥ 100</td><td>Hosmer & Lemeshow (2000)</td></tr>
+      <tr><td>Independent t-test</td><td>n ≥ 20/kelompok</td><td>n ≥ 30/kelompok</td><td>Cohen (1988)</td></tr>
+      <tr><td>One-Way ANOVA</td><td>n ≥ 20/kelompok</td><td>n ≥ 30/kelompok</td><td>Cohen (1988)</td></tr>
+      <tr><td>Chi-Square</td><td>Exp. freq ≥ 5/sel</td><td>n ≥ 50 total</td><td>Cochran (1954)</td></tr>
+      <tr><td>PLS-SEM (SmartPLS)</td><td>n ≥ 30 (minimal)</td><td>n ≥ 100–200</td><td>Hair et al. (2017)</td></tr>
+      <tr><td>CB-SEM (AMOS)</td><td>n ≥ 100</td><td>n ≥ 200–400</td><td>Hair et al. (2010)</td></tr>
+      <tr><td>ARIMA / Time Series</td><td>n ≥ 30 titik waktu</td><td>n ≥ 50–100</td><td>Box & Jenkins (1970)</td></tr>
+      <tr><td>Analisis Tematik</td><td>6–8 informan</td><td>Hingga saturasi tema</td><td>Guest, Bunce & Johnson (2006) <em style="font-size:11px;color:var(--text3)">— Braun & Clarke (2006) tidak menetapkan angka minimum kaku</em></td></tr>
+      <tr><td>Grounded Theory</td><td>15–20 informan</td><td>Hingga saturasi teoritis</td><td>Glaser & Strauss (1967)</td></tr>
+      <tr><td>Fenomenologi</td><td>5–8 informan</td><td>8–15 informan</td><td>Creswell (2013)</td></tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+
+<!-- ══════════════ TAB 3: NON-RESPONSE BIAS ══════════════ -->
+<div class="tab-panel" id="tab-nonresponse">
+  <div style="margin-bottom:1.5rem">
+    <h2 style="font-family:'Instrument Serif',serif;font-size:1.6rem;font-weight:400;margin-bottom:8px">Non-Response Bias</h2>
+    <p style="font-size:13.5px;color:var(--text2);line-height:1.65">Topik yang paling sering diabaikan mahasiswa. Menentukan jumlah sampel saja tidak cukup — kamu juga harus mempertimbangkan berapa banyak yang akan benar-benar merespons, dan apa dampaknya jika banyak yang tidak merespons.</p>
+  </div>
+
+  <div class="warn">
+    <strong>Mengapa ini kritis?</strong> Jika kamu mengirim 150 kuesioner tapi hanya 60 yang kembali (response rate 40%), kamu tidak hanya kehilangan jumlah sampel — kamu berpotensi mendapat bias sistematis karena orang yang merespons mungkin berbeda karakteristiknya dari yang tidak merespons.
+  </div>
+
+  <div class="nrb-grid">
+    <div class="nrb-card">
+      <div class="nrb-title">📊 Response Rate Realistis per Metode</div>
+      <div class="nrb-body">
+        <strong>Kuesioner online (Google Form):</strong> 20–40%<br>
+        <strong>Kuesioner langsung (tatap muka):</strong> 70–95%<br>
+        <strong>Email/WhatsApp blast:</strong> 10–25%<br>
+        <strong>Kuesioner via gatekeeper (kantor):</strong> 50–80%<br>
+        <strong>Wawancara (kualitatif):</strong> tergantung akses<br>
+        <br><em style="font-size:11px;color:var(--text3)">⚠ Mayoritas skripsi menggunakan Google Form — rencanakan distribusi dengan asumsi response rate 30–40%, bukan 50%.</em>
+      </div>
+    </div>
+    <div class="nrb-card">
+      <div class="nrb-title">🔢 Rumus Penyesuaian Jumlah Distribusi</div>
+      <div class="nrb-body">
+        <strong>n_distribusi = n_target / response_rate</strong><br><br>
+        Contoh: butuh 100 sampel, estimasi response rate 50%:<br>
+        → Distribusikan <strong>200 kuesioner</strong><br><br>
+        Selalu tambahkan <strong>10–15%</strong> ekstra untuk antisipasi data tidak valid/rusak.
+      </div>
+    </div>
+    <div class="nrb-card">
+      <div class="nrb-title">✅ Cara Menguji Non-Response Bias</div>
+      <div class="nrb-body">
+        <strong>Wave analysis:</strong> Bandingkan karakteristik responden awal vs akhir — jika berbeda signifikan, ada bias.<br><br>
+        <strong>T-test demografis:</strong> Uji apakah responden dan non-responden berbeda secara statistik pada variabel kunci.
+      </div>
+    </div>
+    <div class="nrb-card">
+      <div class="nrb-title">🛡 Strategi Meningkatkan Response Rate</div>
+      <div class="nrb-body">
+        • Kuesioner singkat (< 10 menit)<br>
+        • Follow-up reminder 2× setelah distribusi pertama<br>
+        • Manfaatkan gatekeeper (ketua kelas, HRD, ketua komunitas)<br>
+        • Distribusi tatap muka lebih baik dari online<br>
+        • Berikan penjelasan tujuan penelitian yang jelas
+      </div>
+    </div>
+    <div class="nrb-card">
+      <div class="nrb-title">📝 Wajib Dilaporkan di Bab Metode</div>
+      <div class="nrb-body">
+        • Jumlah kuesioner yang didistribusikan<br>
+        • Jumlah yang kembali dan valid<br>
+        • Response rate aktual<br>
+        • Cara penanganan non-response (jika ada)<br>
+        • Limitasi yang mungkin timbul dari response rate rendah
+      </div>
+    </div>
+    <div class="nrb-card">
+      <div class="nrb-title">⚠ Ambang Batas Response Rate</div>
+      <div class="nrb-body">
+        <strong>Survei tatap muka / pos:</strong><br>
+        ≥ 70% — sangat baik<br>
+        50–69% — cukup, lazim akademik<br>
+        30–49% — perlu dibahas sebagai limitasi<br>
+        &lt; 30% — risiko bias tinggi<br>
+        <em style="font-size:11px;color:var(--text3)">(Baruch & Holtom, 2008)</em><br><br>
+        <strong>Survei online (Google Form, email):</strong><br>
+        ≥ 50% — sangat baik<br>
+        30–49% — dapat diterima jika didokumentasikan<br>
+        20–29% — perlu dibahas serius sebagai limitasi<br>
+        &lt; 20% — risiko bias sistematis tinggi<br>
+        <em style="font-size:11px;color:var(--text3)">(Cook, Heath & Thompson, 2000 — rata-rata survei online: 39.6%)</em>
+      </div>
+    </div>
+  </div>
+
+  <!-- KALKULATOR DISTRIBUSI -->
+  <div class="divider"><span>Kalkulator Jumlah Kuesioner yang Harus Didistribusikan</span></div>
+  <div style="max-width:480px">
+    <div class="calc-card">
+      <h3>Berapa kuesioner yang harus disebarkan?</h3>
+      <div class="calc-desc">Masukkan target sampel dan estimasi response rate untuk mengetahui berapa kuesioner yang harus didistribusikan.</div>
+      <div class="igroup"><label>Target sampel minimum (n)</label><input type="number" id="rr-n" placeholder="Contoh: 100" min="1"></div>
+      <div class="igroup"><label>Estimasi Response Rate (%)</label>
+        <select id="rr-r">
+          <option value="80">80% — distribusi tatap muka langsung</option>
+          <option value="65">65% — via gatekeeper (HRD/ketua kelas)</option>
+          <option value="50">50% — campuran online dan tatap muka</option>
+          <option value="35" selected>35% — mayoritas online (Google Form) ← default realistis</option>
+          <option value="20">20% — email/WA blast tanpa follow-up</option>
+        </select>
+      </div>
+      <button class="calc-btn" onclick="hitungDistrib()">Hitung Jumlah Distribusi</button>
+      <div class="cresult" id="rr-result">
+        <div class="n-val" id="rr-out">—</div>
+        <div class="n-label">kuesioner yang harus didistribusikan</div>
+        <div class="n-note" id="rr-note"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ TAB 4: PANDUAN ══════════════ -->
+<div class="tab-panel" id="tab-panduan">
+  <div style="margin-bottom:1.5rem">
+    <h2 style="font-family:'Instrument Serif',serif;font-size:1.6rem;font-weight:400;margin-bottom:8px">Perbandingan Lengkap Metode Sampling</h2>
+    <p style="font-size:13.5px;color:var(--text2)">Referensi cepat untuk memahami karakteristik, syarat, dan kondisi ideal setiap metode.</p>
+  </div>
+  <div style="overflow-x:auto">
+  <table class="ctable" style="min-width:720px">
+    <thead>
+      <tr><th>Metode</th><th>Jenis</th><th>Frame?</th><th>Generalisasi?</th><th>Ukuran Pop.</th><th>Ideal Untuk</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Sensus</td><td><span class="badge b-census">Sensus</span></td><td>✅ Ya</td><td>✅ Total</td><td>Kecil (N≤100, panduan umum)</td><td>Populasi sangat kecil, semua anggota bisa dijangkau</td></tr>
+      <tr><td>Simple Random Sampling</td><td><span class="badge b-prob">Probability</span></td><td>✅ Ya</td><td>✅ Ya</td><td>Sedang (100–5000)</td><td>Populasi homogen, daftar lengkap tersedia</td></tr>
+      <tr><td>Systematic Sampling</td><td><span class="badge b-prob">Probability</span></td><td>✅ Ya</td><td>✅ Ya</td><td>Sedang–Besar</td><td>Daftar terurut, audit, survei pelanggan</td></tr>
+      <tr><td>Stratified Random Sampling</td><td><span class="badge b-prob">Probability</span></td><td>✅ Ya</td><td>✅ Ya</td><td>Sedang–Besar</td><td>Populasi heterogen dengan subkelompok penting</td></tr>
+      <tr><td>Cluster Sampling</td><td><span class="badge b-prob">Probability</span></td><td>⚠ Klaster</td><td>⚠ Terbatas</td><td>Besar, tersebar</td><td>Populasi tersebar geografis, anggaran terbatas</td></tr>
+      <tr><td>Multistage Sampling</td><td><span class="badge b-mixed">Kombinasi</span></td><td>✅ Bertahap</td><td>✅ Ya</td><td>Sangat besar</td><td>Survei nasional/regional, BPS, multi-wilayah</td></tr>
+      <tr><td>Purposive / Judgmental</td><td><span class="badge b-nonprob">Non-Probability</span></td><td>❌ Tidak</td><td>❌ Tidak</td><td>Tidak relevan</td><td>Kualitatif, informan kunci, kriteria spesifik</td></tr>
+      <tr><td>Snowball Sampling</td><td><span class="badge b-nonprob">Non-Probability</span></td><td>❌ Tidak</td><td>❌ Tidak</td><td>Tidak relevan</td><td>Populasi tersembunyi, komunitas tertutup</td></tr>
+      <tr><td>Convenience Sampling</td><td><span class="badge b-nonprob">Non-Probability</span></td><td>❌ Tidak</td><td>❌ Tidak</td><td>Tidak relevan</td><td>Pilot study, eksplorasi awal, sumber daya minimal</td></tr>
+      <tr><td>Quota Sampling</td><td><span class="badge b-nonprob">Non-Probability</span></td><td>❌ Tidak</td><td>⚠ Sangat terbatas</td><td>Tidak relevan</td><td>Riset cepat, menjaga proporsi subkelompok minimal</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="divider"><span>5 Kesalahan Sampling Paling Umum di Skripsi</span></div>
+  <div class="rcards">
+    <div class="rcard"><div class="rcard-hd"><div><div class="rcard-name">❌ Kesalahan 1: Mengklaim SRS padahal Convenience</div></div></div>
+    <div style="padding:14px 18px;font-size:13px;color:var(--text2);line-height:1.7">
+      <strong>Masalah:</strong> Menyebar kuesioner ke teman sekelas atau komunitas WhatsApp, lalu di bab metode ditulis "Simple Random Sampling".<br>
+      <strong>Dampak:</strong> Reviewer/penguji akan langsung mempertanyakan. Ini bukan random — tidak semua anggota populasi punya kesempatan terpilih.<br>
+      <strong>Solusi:</strong> Tulis apa adanya. Convenience sampling dengan limitasi yang jelas jauh lebih jujur dan akademis daripada klaim SRS yang tidak bisa dipertanggungjawabkan.
+    </div></div>
+
+    <div class="rcard"><div class="rcard-hd"><div><div class="rcard-name">❌ Kesalahan 2: Slovin tanpa mendefinisikan populasi dengan jelas</div></div></div>
+    <div style="padding:14px 18px;font-size:13px;color:var(--text2);line-height:1.7">
+      <strong>Masalah:</strong> Menulis "populasi penelitian ini adalah masyarakat Kota Blitar" lalu menghitung Slovin dengan N = 141.000. Tapi siapa tepatnya yang menjadi populasi? Semua warga? Hanya yang pernah menggunakan layanan tertentu?<br>
+      <strong>Dampak:</strong> Populasi tidak terdefinisi = sampling frame tidak ada = Slovin tidak valid.<br>
+      <strong>Solusi:</strong> Definisikan populasi dengan sangat spesifik (kriteria inklusi dan eksklusi) sebelum menentukan N dan menghitung n.
+    </div></div>
+
+    <div class="rcard"><div class="rcard-hd"><div><div class="rcard-name">❌ Kesalahan 3: Mengabaikan non-response dalam penentuan jumlah distribusi</div></div></div>
+    <div style="padding:14px 18px;font-size:13px;color:var(--text2);line-height:1.7">
+      <strong>Masalah:</strong> Slovin menghasilkan n = 86, lalu hanya mendistribusikan tepat 86 kuesioner. Ketika 20 tidak kembali, sampel menjadi hanya 66 — di bawah minimum.<br>
+      <strong>Solusi:</strong> Selalu distribusikan 20–30% lebih banyak dari n minimum. Gunakan kalkulator distribusi di tab Non-Response Bias.
+    </div></div>
+
+    <div class="rcard"><div class="rcard-hd"><div><div class="rcard-name">❌ Kesalahan 4: Stratified sampling tanpa proporsionalitas</div></div></div>
+    <div style="padding:14px 18px;font-size:13px;color:var(--text2);line-height:1.7">
+      <strong>Masalah:</strong> Menyebut "stratified random sampling" dengan 3 strata (divisi A=200 orang, B=150, C=50), tapi mengambil 30 sampel dari masing-masing strata secara merata.<br>
+      <strong>Dampak:</strong> Divisi C over-represented, Divisi A under-represented. Ini bukan stratified yang benar.<br>
+      <strong>Solusi:</strong> Gunakan rumus nᵢ = n × (Nᵢ/N). Gunakan kalkulator stratified di tab Kalkulator.
+    </div></div>
+
+    <div class="rcard"><div class="rcard-hd"><div><div class="rcard-name">❌ Kesalahan 5: Purposive sampling tanpa kriteria yang eksplisit</div></div></div>
+    <div style="padding:14px 18px;font-size:13px;color:var(--text2);line-height:1.7">
+      <strong>Masalah:</strong> Menyebut "purposive sampling" tapi tidak mencantumkan kriteria inklusi/eksklusi yang jelas. Siapa saja yang termasuk? Mengapa mereka dipilih?<br>
+      <strong>Dampak:</strong> Purposive tanpa kriteria eksplisit = convenience sampling yang dikamuflase.<br>
+      <strong>Solusi:</strong> Tulis kriteria secara eksplisit: misalnya "informan harus memiliki pengalaman minimal 5 tahun sebagai manajer keuangan dan pernah terlibat langsung dalam proses audit internal."
+    </div></div>
+  </div>
+</div>
+
+</main>
+
+<footer>
+  Panduan disusun berdasarkan Hair et al. (2017, 2022), Creswell (2013), Cochran (1977), Green (1991), Cohen (1988, 1992), Yin (2014),<br>
+  Tejada & Punzalan (2012), Guest, Bunce & Johnson (2006), Baruch & Holtom (2008), Cook, Heath & Thompson (2000), Arikunto (2006).<br>
+  Selalu konsultasikan pilihan metode sampling dengan dosen pembimbingmu.
+</footer>
+
+<script>
+// ══════════════ TABS ══════════════
+document.querySelectorAll('.tab').forEach(t=>{
+  t.addEventListener('click',()=>{
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById('tab-'+t.dataset.tab).classList.add('active');
+  });
+});
+
+// ══════════════ FILTER DATA ══════════════
+const LAYERS = [
+  { id:'fp0', label:'Layer 0 — Paradigma', opts:[
+    {id:'kuantitatif', label:'Kuantitatif — Survei, eksperimen, data sekunder'},
+    {id:'kualitatif',  label:'Kualitatif — Wawancara, observasi, studi kasus'},
+    {id:'mixed',       label:'Mixed Methods — Kombinasi kuantitatif & kualitatif'},
+  ]},
+  { id:'fp1', label:'Layer 1 — Populasi', opts:[
+    {id:'kecil-ada',   label:'Populasi kecil (N ≤ 100) dan daftar tersedia'},
+    {id:'sedang-ada',  label:'Populasi sedang (N = 100–5000) dan daftar tersedia'},
+    {id:'besar-ada',   label:'Populasi besar (N > 5000) dan daftar tersedia'},
+    {id:'tidak-ada',   label:'Tidak ada daftar populasi / tidak bisa diakses'},
+    {id:'sangat-besar',label:'Populasi sangat besar / tidak terbatas (tidak ada frame)'},
+  ]},
+  { id:'fp2', label:'Layer 2 — Struktur', opts:[
+    {id:'homogen',    label:'Homogen — karakteristik populasi relatif seragam'},
+    {id:'heterogen',  label:'Heterogen — ada subkelompok berbeda yang penting diwakili'},
+    {id:'geografis',  label:'Tersebar geografis — banyak lokasi/wilayah berbeda'},
+    {id:'multi',      label:'Heterogen DAN tersebar geografis'},
+  ]},
+  { id:'fp3', label:'Layer 3 — Responden', opts:[
+    {id:'mudah',      label:'Mudah diakses — populasi umum, bisa dihubungi langsung'},
+    {id:'gatekeeper', label:'Butuh izin gatekeeper — perusahaan, instansi, sekolah'},
+    {id:'tersembunyi',label:'Tersembunyi / sulit dijangkau — komunitas sensitif atau tertutup'},
+    {id:'spesifik',   label:'Kriteria sangat spesifik — hanya orang dengan keahlian/pengalaman tertentu'},
+  ]},
+  { id:'fp4', label:'Layer 4 — Kapasitas', opts:[
+    {id:'mandiri-terbatas', label:'Mandiri, anggaran terbatas, waktu singkat (skripsi biasa)'},
+    {id:'mandiri-cukup',   label:'Mandiri, cukup waktu, bisa keliling beberapa lokasi'},
+    {id:'tim-lembaga',     label:'Ada dukungan tim / lembaga / dana penelitian'},
+  ]},
+  { id:'fp5', label:'Layer 5 — Inferensial', opts:[
+    {id:'generalisasi-penuh', label:'Harus bisa digeneralisasikan ke seluruh populasi'},
+    {id:'generalisasi-terbatas', label:'Generalisasi terbatas pada konteks/lokasi tertentu'},
+    {id:'tidak-generalisasi', label:'Tidak perlu generalisasi — fokus pemahaman mendalam'},
+  ]},
+];
+
+// Skip logic: [layer, kondisi yang menyebabkan skip]
+// Jika paradigma = kualitatif → skip L1, L2, L5 (tidak relevan)
+// Jika L1 = kecil-ada → rekomendasikan sensus langsung, skip L2
+// Jika L1 = tidak-ada / sangat-besar → skip L2 (struktur tidak relevan karena tidak ada frame)
+
+const sel = {f0:null,f1:null,f2:null,f3:null,f4:null,f5:null};
+const skipped = {f1:false,f2:false,f3:false,f4:false,f5:false};
+
+// ══════════════ METHODS DATABASE ══════════════
+const METHODS = [
+  // SENSUS
+  {id:'sensus',name:'Sensus (Total Sampling)',sub:'Ambil seluruh anggota populasi sebagai sampel',jenis:'census',
+   match:(s)=>s.f1==='kecil-ada',
+   syarat:'Populasi kecil dan semua anggota bisa dijangkau secara praktis. N ≤ 100 adalah panduan umum (Arikunto, 2006), bukan batas mutlak — sensus bisa digunakan hingga N = 200–300 jika populasi terdefinisi ketat dan seluruh anggota dapat diakses. Daftar populasi tersedia lengkap.',
+   cara:'Tidak ada proses sampling — semua anggota populasi diikutsertakan sebagai responden.',
+   rumus:'n = N (ambil semua)',
+   kelebihan:'Tidak ada sampling error. Data paling representatif karena mencakup seluruh populasi.',
+   kelemahan:'Hanya feasible untuk populasi sangat kecil. Mahal dan memakan waktu untuk populasi sedang/besar.',
+   catatan_bias:'Tidak ada sampling bias, tapi tetap bisa ada non-response bias jika ada anggota yang menolak.',
+   judul:[
+     'Analisis Kinerja Keuangan Seluruh BUMD di Kabupaten Blitar Tahun 2020–2023',
+     'Evaluasi Sistem Pengendalian Internal pada Seluruh Koperasi Simpan Pinjam di Kecamatan X',
+     'Pengaruh Motivasi terhadap Kinerja Seluruh Staf Keuangan Dinas Pendapatan Kabupaten Blitar',
+   ]},
+
+  // SIMPLE RANDOM SAMPLING
+  {id:'srs',name:'Simple Random Sampling (SRS)',sub:'Setiap anggota punya peluang sama terpilih — paling murni secara statistik',jenis:'prob',
+   match:(s)=>(s.f1==='sedang-ada'||s.f1==='besar-ada')&&s.f2==='homogen'&&(s.f3==='mudah'||s.f3==='gatekeeper')&&s.f5==='generalisasi-penuh',
+   syarat:'Daftar populasi (sampling frame) lengkap dan akurat. Populasi relatif homogen. N tidak terlalu besar (< 5000 ideal).',
+   cara:'(1) Buat daftar semua anggota populasi dengan nomor urut. (2) Gunakan tabel angka acak atau Random.org untuk memilih n nomor. (3) Responden dengan nomor terpilih menjadi sampel.',
+   rumus:'<strong>Utama — Cochran (1977):</strong> n = Z²·p·(1−p) / e²<br><small>Contoh: Z=1.96, p=0.5, e=0.05 → n=384</small><br><br><strong>Alternatif praktis — Slovin:</strong> n = N / (1 + N·e²)<br><small>⚠ Mengunci p=0.5 dan Z=1.96 secara implisit. Gunakan hanya jika populasi diketahui dan ingin perhitungan cepat. Cochran lebih disarankan secara metodologis (Tejada & Punzalan, 2012).</small>',
+   kelebihan:'Bebas bias seleksi. Paling valid secara statistik. Standard error dapat dihitung presisi.',
+   kelemahan:'Butuh daftar populasi yang lengkap. Tidak efisien untuk populasi tersebar atau heterogen.',
+   catatan_bias:'Risiko non-response bias jika response rate < 50%. Distribusikan 20–30% lebih banyak dari n minimum.',
+   judul:[
+     'Pengaruh ROA, DER, dan Ukuran Perusahaan terhadap Harga Saham Perusahaan Manufaktur di BEI',
+     'Hubungan antara Kepuasan Kerja dan Kinerja Karyawan PT Bank Rakyat Indonesia Cabang Blitar',
+     'Pengaruh Literasi Keuangan dan Gaya Hidup terhadap Keputusan Investasi Mahasiswa Ekonomi Universitas X',
+     'Analisis Kepuasan Nasabah terhadap Kualitas Layanan Mobile Banking Bank Syariah Indonesia',
+   ]},
+
+  // SYSTEMATIC SAMPLING
+  {id:'systematic',name:'Systematic Sampling',sub:'Pilih setiap elemen ke-k dari daftar populasi yang terurut',jenis:'prob',
+   match:(s)=>(s.f1==='sedang-ada'||s.f1==='besar-ada')&&s.f2==='homogen'&&s.f3==='mudah'&&s.f5!=='tidak-generalisasi',
+   syarat:'Daftar populasi tersedia dan bisa diurutkan. Tidak ada pola periodik tersembunyi dalam daftar.',
+   cara:'(1) Hitung interval k = N/n. (2) Pilih titik awal acak antara 1 dan k. (3) Pilih setiap elemen ke-k berikutnya.',
+   rumus:'k = N/n (interval pemilihan)',
+   kelebihan:'Lebih mudah dieksekusi dari SRS. Distribusi sampel merata di seluruh daftar.',
+   kelemahan:'Berbahaya jika ada pola periodik dalam urutan daftar (misal: daftar alternating laki-perempuan).',
+   catatan_bias:'Periksa apakah ada pola periodik sebelum memutuskan menggunakan metode ini.',
+   judul:[
+     'Pengaruh Kepuasan Kerja terhadap Loyalitas Karyawan pada Perusahaan Retail Nasional',
+     'Analisis Penerapan SAK ETAP pada Koperasi Simpan Pinjam di Kota Blitar',
+     'Pengaruh Kualitas Produk dan Harga terhadap Keputusan Pembelian Konsumen Minimarket',
+   ]},
+
+  // STRATIFIED RANDOM SAMPLING
+  {id:'stratified',name:'Stratified Random Sampling',sub:'Bagi populasi ke strata, random sampling di tiap strata',jenis:'prob',
+   match:(s)=>(s.f1==='sedang-ada'||s.f1==='besar-ada')&&(s.f2==='heterogen'||s.f2==='multi')&&s.f5!=='tidak-generalisasi',
+   syarat:'Daftar populasi tersedia. Ada subkelompok (strata) yang berbeda secara signifikan dan penting diwakili. Informasi strata tersedia.',
+   cara:'(1) Identifikasi variabel stratifikasi. (2) Bagi populasi ke strata. (3) Hitung nᵢ = n × (Nᵢ/N). (4) Lakukan SRS di tiap strata.',
+   rumus:'nᵢ = n × (Nᵢ / N) untuk tiap strata i',
+   kelebihan:'Semua subkelompok terwakili proporsional. Presisi lebih tinggi untuk populasi heterogen.',
+   kelemahan:'Butuh informasi strata yang detail. Lebih kompleks dalam eksekusi.',
+   catatan_bias:'Pastikan nᵢ minimal ≥ 10 per strata. Strata dengan anggota sangat sedikit bisa digabung.',
+   judul:[
+     'Perbedaan Kinerja Keuangan berdasarkan Sektor Industri: Studi Perusahaan LQ45 di BEI',
+     'Pengaruh Budaya Organisasi terhadap Komitmen Karyawan berdasarkan Divisi pada Bank Mandiri',
+     'Analisis Tingkat Kepatuhan Wajib Pajak UMKM berdasarkan Jenis Usaha di Kota Malang',
+     'Pengaruh Literasi Keuangan terhadap Investasi berdasarkan Generasi (Milenial vs Gen Z)',
+   ]},
+
+  // CLUSTER SAMPLING
+  {id:'cluster',name:'Cluster Sampling',sub:'Pilih klaster alami secara acak, ambil anggotanya',jenis:'prob',
+   match:(s)=>(s.f1==='besar-ada'||s.f1==='sedang-ada')&&(s.f2==='geografis'||s.f2==='multi')&&(s.f4==='mandiri-terbatas'||s.f4==='mandiri-cukup'),
+   syarat:'Populasi tersebar di banyak lokasi geografis. Klaster alami sudah ada (kecamatan, kelas, kantor cabang). Biaya kunjungan antar lokasi menjadi pertimbangan.',
+   cara:'(1) Identifikasi klaster alami. (2) Pilih sejumlah klaster secara acak. (3) Ambil semua anggota klaster terpilih (one-stage) atau sampling dalam klaster (two-stage).',
+   rumus:'Tidak ada rumus tunggal; disesuaikan dengan desain klaster',
+   kelebihan:'Efisien biaya untuk populasi tersebar luas. Tidak butuh daftar lengkap semua anggota populasi.',
+   kelemahan:'Standard error lebih besar. Risiko homogenitas dalam klaster (anggota satu klaster sering mirip).',
+   catatan_bias:'Gunakan minimal 5–10 klaster. Semakin banyak klaster, semakin representatif.',
+   judul:[
+     'Pengaruh Kualitas Pelayanan terhadap Kepuasan Nasabah: Studi Multi-Cabang BNI Jawa Timur',
+     'Analisis Kinerja UMKM berdasarkan Kecamatan di Kabupaten Blitar',
+     'Pengaruh Program CSR terhadap Citra Perusahaan: Survei Multi-Lokasi',
+   ]},
+
+  // MULTISTAGE SAMPLING
+  {id:'multistage',name:'Multistage Sampling',sub:'Kombinasi beberapa tahap: cluster → stratified → random',jenis:'mixed',
+   match:(s)=>s.f1==='sangat-besar'||(s.f2==='multi'&&s.f4==='tim-lembaga'),
+   syarat:'Populasi sangat besar dan tersebar. Ada sumber daya tim atau lembaga. Sampling frame bertahap tersedia (misal: daftar kecamatan, lalu daftar RT, lalu daftar KK).',
+   cara:'Tahap 1: Pilih klaster level 1 (misal: kabupaten) secara acak. Tahap 2: Pilih klaster level 2 (misal: kecamatan) secara acak dari klaster terpilih. Tahap 3: Pilih individu dengan SRS atau stratified.',
+   rumus:'Kombinasi formula tiap tahap; standar error kumulatif',
+   kelebihan:'Satu-satunya metode feasible untuk survei skala nasional/regional. Fleksibel untuk populasi sangat kompleks.',
+   kelemahan:'Sangat kompleks. Akumulasi error di setiap tahap. Butuh keahlian statistik yang cukup tinggi.',
+   catatan_bias:'Setiap tahap menambah design effect. Hitung DEFF untuk koreksi standard error.',
+   judul:[
+     'Analisis Determinan Kemiskinan Rumah Tangga di Jawa Timur: Pendekatan Multistage Sampling',
+     'Survei Literasi Keuangan Masyarakat Pedesaan Jawa Timur: Studi Multistage',
+     'Pola Pengeluaran UMKM di Berbagai Kabupaten Jawa Timur: Survei Multistage',
+   ]},
+
+  // PURPOSIVE SAMPLING
+  {id:'purposive',name:'Purposive / Judgmental Sampling',sub:'Peneliti memilih subjek berdasarkan kriteria yang ditetapkan secara eksplisit',jenis:'nonprob',
+   match:(s)=>s.f0==='kualitatif'||(s.f3==='spesifik'&&s.f1==='tidak-ada'),
+   syarat:'Tidak ada sampling frame. Dibutuhkan informan dengan karakteristik atau keahlian sangat spesifik. Kriteria inklusi dan eksklusi harus didefinisikan secara eksplisit.',
+   cara:'(1) Tetapkan kriteria inklusi dan eksklusi secara tertulis. (2) Identifikasi calon informan yang memenuhi semua kriteria. (3) Rekrut secara langsung atau melalui gatekeeper yang dipercaya.',
+   rumus:'Tidak ada rumus — lanjutkan hingga saturasi data',
+   kelebihan:'Tepat sasaran. Efisien untuk mendapatkan data kaya dari narasumber yang benar-benar relevan.',
+   kelemahan:'Rentan bias seleksi dari peneliti. Tidak bisa digeneralisasikan secara statistik.',
+   catatan_bias:'Dokumentasikan alasan pemilihan setiap informan. Audit trail wajib untuk dependabilitas.',
+   judul:[
+     'Strategi Pemasaran Digital UMKM Kuliner Bertahan di Era Pasca Pandemi: Studi Kasus Kota Blitar',
+     'Pengalaman Auditor Senior dalam Mendeteksi Kecurangan Laporan Keuangan: Studi Kualitatif',
+     'Implementasi Akuntansi Lingkungan pada Perusahaan Pertambangan Tbk: Perspektif CFO',
+     'Proses Pengambilan Keputusan Investasi Angel Investor pada Startup Digital Indonesia',
+   ]},
+
+  // SNOWBALL SAMPLING
+  {id:'snowball',name:'Snowball Sampling',sub:'Informan awal merekomendasikan informan berikutnya secara berantai',jenis:'nonprob',
+   match:(s)=>s.f3==='tersembunyi'||(s.f0==='kualitatif'&&s.f3==='tersembunyi'),
+   syarat:'Populasi tersembunyi, sulit dijangkau, atau tidak ada daftar resmi. Anggota populasi saling mengenal satu sama lain.',
+   cara:'(1) Identifikasi satu atau beberapa informan awal ("seed") yang memenuhi kriteria. (2) Setelah wawancara/pengisian, minta merekomendasikan orang lain yang memenuhi kriteria. (3) Ulangi hingga saturasi atau kuota terpenuhi.',
+   rumus:'Tidak ada rumus — lanjutkan hingga saturasi',
+   kelebihan:'Efektif untuk populasi tersembunyi atau sensitif. Membangun kepercayaan melalui jaringan sosial.',
+   kelemahan:'Bias jaringan sosial — hanya menjangkau satu "klaster" sosial. Tidak representatif secara statistik.',
+   catatan_bias:'Mulai dari beberapa "seed" yang berbeda untuk meminimalkan bias jaringan.',
+   judul:[
+     'Pengalaman Mantan Karyawan Startup dalam Menghadapi PHK Massal: Studi Fenomenologi',
+     'Perilaku Investasi Komunitas Saham Syariah Online: Studi Kualitatif Grup Tertutup',
+     'Strategi Bertahan Pedagang Kaki Lima dalam Menghadapi Penertiban: Snowball Sampling',
+   ]},
+
+  // CONVENIENCE SAMPLING
+  {id:'convenience',name:'Convenience Sampling',sub:'Ambil yang paling mudah dijangkau — dengan catatan limitasi yang jelas',jenis:'nonprob',
+   match:(s)=>(s.f1==='tidak-ada'||s.f1==='sangat-besar')&&s.f4==='mandiri-terbatas'&&s.f5==='tidak-generalisasi',
+   syarat:'Sumber daya sangat terbatas. Digunakan untuk pilot study atau ketika metode lain tidak memungkinkan. Limitasi harus dicantumkan secara jelas di bab metode.',
+   cara:'Distribusikan kuesioner/wawancara kepada siapa saja yang mudah diakses dan memenuhi kriteria minimal.',
+   rumus:'Ikuti minimum n berdasarkan metode analisis yang digunakan',
+   kelebihan:'Paling cepat dan murah. Mudah dieksekusi mandiri.',
+   kelemahan:'Sangat rentan bias seleksi. Tidak representatif. Hasil tidak bisa digeneralisasikan.',
+   catatan_bias:'WAJIB cantumkan sebagai limitasi di bab penutup. Jangan klaim hasil bisa digeneralisasikan.',
+   judul:[
+     'Pengaruh Media Sosial terhadap Minat Beli Produk UMKM pada Mahasiswa Generasi Z',
+     'Persepsi Mahasiswa Akuntansi terhadap Profesi Akuntan Publik di Era Digitalisasi',
+     'Pengaruh Literasi Keuangan terhadap Penggunaan Paylater pada Mahasiswa Ekonomi',
+   ]},
+
+  // QUOTA SAMPLING
+  {id:'quota',name:'Quota Sampling',sub:'Tentukan kuota per kategori, isi bebas tanpa proses acak',jenis:'nonprob',
+   match:(s)=>s.f1==='tidak-ada'&&s.f2==='heterogen'&&s.f4==='mandiri-terbatas',
+   syarat:'Tidak ada sampling frame namun ingin menjaga proporsi subkelompok tertentu. Sumber daya terbatas.',
+   cara:'(1) Tentukan kategori dan kuota proporsional. (2) Rekrut responden hingga kuota tiap kategori terpenuhi, tanpa prosedur acak dalam kategori.',
+   rumus:'Kuota per strata: qᵢ = n × (proporsi subkelompok i)',
+   kelebihan:'Menjamin representasi tiap subkelompok. Lebih cepat dari stratified random.',
+   kelemahan:'Pemilihan dalam kuota tidak acak — tetap ada bias seleksi.',
+   catatan_bias:'Cantumkan sebagai limitasi. Jangan klaim inferensi statistik formal.',
+   judul:[
+     'Pengaruh Motivasi dan Disiplin terhadap Kinerja berdasarkan Gender di Perusahaan Asuransi',
+     'Perbedaan Perilaku Konsumtif antara Mahasiswa Penerima Beasiswa dan Non-Beasiswa',
+     'Pengaruh Gaya Kepemimpinan terhadap Kepuasan Kerja Karyawan Milenial dan Gen Z',
+   ]},
+
+  // MIXED METHODS SAMPLING
+  {id:'mixed-sampling',name:'Dual Sampling Strategy (Mixed Methods)',sub:'Dua strategi sampling berbeda untuk komponen kuantitatif dan kualitatif',jenis:'mixed',
+   match:(s)=>s.f0==='mixed',
+   syarat:'Penelitian mixed methods membutuhkan dua strategi sampling yang berbeda dan direncanakan secara terpisah: satu untuk komponen kuantitatif (probability/non-probability), satu untuk kualitatif (purposive/snowball).',
+   cara:'Komponen Kuantitatif: pilih metode probability/non-probability sesuai kondisi (SRS, Stratified, Convenience). Komponen Kualitatif: gunakan purposive atau snowball. Kedua sampel bisa dari populasi yang sama atau berbeda.',
+   rumus:'Kuantitatif: Slovin/Cochran untuk n. Kualitatif: tidak ada rumus — hingga saturasi.',
+   kelebihan:'Komprehensif. Validasi silang antara temuan kuantitatif dan kualitatif dimungkinkan.',
+   kelemahan:'Kompleksitas ganda. Butuh justifikasi yang jelas mengapa dua strategi sampling berbeda digunakan.',
+   catatan_bias:'Jelaskan di bab metode bahwa kedua sampel memiliki tujuan berbeda dan tidak harus sama besarnya.',
+   judul:[
+     'Determinan Kepuasan Kerja Generasi Milenial: Survei Kuantitatif dan Wawancara Mendalam (Sequential Explanatory)',
+     'Pengembangan Skala Literasi Keuangan UMKM Lokal: Eksplorasi Kualitatif dan Validasi Kuantitatif',
+     'Faktor Pemengaruh Financial Distress UMKM dan Narasi di Balik Angka: Mixed Methods',
+   ]},
+];
+
+// ══════════════ FILTER ENGINE ══════════════
+function getSkipConfig(s) {
+  const skip = {f1:false,f2:false,f3:false,f4:false,f5:false};
+  if (s.f0 === 'kualitatif') {
+    skip.f1 = true; skip.f2 = true; skip.f5 = true;
+  }
+  if (s.f0 === 'mixed') {
+    skip.f1 = true; skip.f2 = true;
+  }
+  if (s.f1 === 'kecil-ada') {
+    skip.f2 = true;
+  }
+  if (s.f1 === 'tidak-ada' || s.f1 === 'sangat-besar') {
+    skip.f2 = true;
+  }
+  return skip;
+}
+
+function renderFilter(idx, opts, key) {
+  const el = document.getElementById('fp'+idx);
+  if (!el) return;
+  el.innerHTML = '';
+  opts.forEach(o => {
+    const p = document.createElement('button');
+    p.type = 'button';
+    p.className = 'pill' + (sel[key] === o.id ? ' active' : '');
+    p.textContent = o.label;
+    p.onclick = () => {
+      sel[key] = sel[key] === o.id ? null : o.id;
+      // reset downstream
+      const keys = ['f0','f1','f2','f3','f4','f5'];
+      const cur = keys.indexOf(key);
+      keys.slice(cur+1).forEach(k => sel[k] = null);
+      rebuildUI();
+      showResult();
+    };
+    el.appendChild(p);
+  });
+}
+
+function rebuildUI() {
+  const skip = getSkipConfig(sel);
+  const keys = ['f0','f1','f2','f3','f4','f5'];
+  const filled = keys.filter(k => sel[k]).length;
+
+  // Update each filter card visibility and state
+  for (let i = 0; i <= 5; i++) {
+    const key = 'f'+i;
+    const card = document.getElementById('fc'+i);
+    const num  = document.getElementById('fn'+i);
+    const step = document.getElementById('st'+i);
+    if (!card) continue;
+
+    const isSkip = i > 0 && skip[key];
+    const isDone = !!sel[key] || isSkip;
+    const prevDone = i === 0 ? true : (!!sel['f'+(i-1)] || (i>1&&skip['f'+(i-1)]));
+
+    if (isSkip) {
+      card.className = 'filter-card disabled';
+      num.className = 'fnum skip';
+      num.textContent = '↷';
+      // show skip note
+      let note = card.querySelector('.fskip-note');
+      if (!note) {
+        note = document.createElement('span');
+        note.className = 'fskip-note';
+        card.querySelector('.fmeta').appendChild(note);
+      }
+      note.textContent = 'Dilewati otomatis';
+      if (step) { step.className = 'step done'; }
+    } else {
+      // remove skip note if present
+      const note = card.querySelector('.fskip-note');
+      if (note) note.remove();
+
+      if (sel[key]) {
+        card.className = 'filter-card';
+        num.className = 'fnum done';
+        num.textContent = '✓';
+        if (step) step.className = 'step done';
+      } else if (prevDone) {
+        card.className = 'filter-card active-card';
+        num.className = 'fnum';
+        num.textContent = i;
+        if (step) step.className = 'step active';
+      } else {
+        card.className = 'filter-card disabled';
+        num.className = 'fnum';
+        num.textContent = i;
+        if (step) step.className = 'step';
+      }
+    }
+  }
+
+  // re-render pills
+  LAYERS.forEach((l,i) => renderFilter(i, l.opts, 'f'+i));
+}
+
+function matchMethod(m) {
+  return m.match(sel);
+}
+
+function badgeH(j) {
+  return {
+    prob:    '<span class="badge b-prob">Probability</span>',
+    nonprob: '<span class="badge b-nonprob">Non-Probability</span>',
+    census:  '<span class="badge b-census">Sensus</span>',
+    mixed:   '<span class="badge b-mixed">Kombinasi</span>',
+  }[j] || '';
+}
+
+function showResult() {
+  const wEl = document.getElementById('warn-area');
+  const rEl = document.getElementById('result-area');
+  const skip = getSkipConfig(sel);
+
+  // need at least f0 and one more meaningful answer
+  const meaningful = ['f0','f1','f3','f4','f5'].filter(k => !skip[k] && sel[k]);
+  if (!sel.f0 || meaningful.length < 2) {
+    wEl.innerHTML = '';
+    rEl.innerHTML = '<div class="empty"><div class="ico">⬆</div><p>Jawab minimal 3 filter untuk melihat rekomendasi.</p></div>';
+    return;
+  }
+
+  const results = METHODS.filter(matchMethod);
+
+  // Warnings
+  let warns = '';
+  if (sel.f5 === 'generalisasi-penuh' && sel.f1 === 'tidak-ada') {
+    warns += `<div class="warn">⚠ <strong>Konflik terdeteksi:</strong> Kamu ingin generalisasi penuh ke populasi, tapi tidak memiliki sampling frame. Ini adalah hambatan metodologis serius. Pertimbangkan untuk: (1) mencari daftar populasi alternatif, atau (2) mengubah tujuan inferensial menjadi terbatas.</div>`;
+  }
+  if (sel.f4 === 'mandiri-terbatas' && (sel.f2 === 'geografis' || sel.f2 === 'multi')) {
+    warns += `<div class="warn">⚠ <strong>Kapasitas vs Struktur Populasi:</strong> Populasi tersebar geografis tapi sumber daya terbatas. Cluster sampling direkomendasikan, tapi pertimbangkan membatasi area penelitian agar lebih manageable.</div>`;
+  }
+  if (sel.f0 === 'kuantitatif' && sel.f5 === 'tidak-generalisasi') {
+    warns += `<div class="info">ℹ <strong>Catatan:</strong> Penelitian kuantitatif umumnya bertujuan inferensial. Jika tidak perlu generalisasi, pertimbangkan apakah mixed methods atau kualitatif lebih sesuai dengan tujuan penelitianmu.</div>`;
+  }
+  if (sel.f4 === 'mandiri-terbatas') {
+    warns += `<div class="info">ℹ <strong>Ingat Non-Response Bias:</strong> Dengan sumber daya terbatas, response rate bisa rendah. Selalu distribusikan 20–30% lebih banyak kuesioner dari n minimum. Lihat tab Non-Response Bias.</div>`;
+  }
+  wEl.innerHTML = warns;
+
+  if (!results.length) {
+    rEl.innerHTML = `<div class="empty"><div class="ico">⚠</div><p>Tidak ada metode yang cocok persis dengan kombinasi ini. Coba ubah salah satu filter atau konsultasikan dengan dosen pembimbing.</p></div>`;
+    return;
+  }
+
+  const cards = results.map(r => {
+    const jl = r.judul.map((j,i) => `<li data-n="${i+1}">${j}</li>`).join('');
+    return `<div class="rcard">
+      <div class="rcard-hd"><div><div class="rcard-name">${r.name}</div><div class="rcard-sub">${r.sub}</div></div>${badgeH(r.jenis)}</div>
+      <div class="rgrid">
+        <div class="rsec"><div class="slabel">Syarat Penggunaan</div><div class="scontent">${r.syarat}</div></div>
+        <div class="rsec"><div class="slabel">Cara Pengambilan Sampel</div><div class="scontent">${r.cara}</div></div>
+        <div class="rsec"><div class="slabel">Rumus / Formula</div><div class="scontent" style="font-family:monospace;font-size:12.5px">${r.rumus}</div></div>
+        <div class="rsec"><div class="slabel">Kelebihan & Kelemahan</div><div class="scontent">✅ ${r.kelebihan}<br>⚠ ${r.kelemahan}</div></div>
+        <div class="rsec fullb"><div class="slabel">⚠ Catatan Bias & Praktik Terbaik</div><div class="scontent">${r.catatan_bias}</div></div>
+        <div class="rsec full"><div class="slabel">💡 Contoh Judul Skripsi (Ekonomi Bisnis & Akuntansi)</div><ul class="jlist">${jl}</ul></div>
+      </div>
+    </div>`;
+  }).join('');
+
+  rEl.innerHTML = `
+    <div class="rh"><div class="rt">Rekomendasi Metode Sampling</div><div class="rc">${results.length} metode sesuai</div></div>
+    <div class="rcards">${cards}</div>`;
+}
+
+function resetAll() {
+  Object.keys(sel).forEach(k => sel[k] = null);
+  rebuildUI();
+  showResult();
+  document.getElementById('warn-area').innerHTML = '';
+}
+
+// INIT
+rebuildUI();
+showResult();
+
+// ══════════════ CALCULATORS ══════════════
+function hitungSlovin() {
+  const N=parseFloat(document.getElementById('sl-N').value);
+  const e=parseFloat(document.getElementById('sl-e').value);
+  if(!N||N<1){alert('Masukkan N yang valid.');return;}
+  const n=Math.ceil(N/(1+N*e*e));
+  const nExtra=Math.ceil(n*1.20);
+  document.getElementById('sl-n').textContent=n;
+  document.getElementById('sl-note').textContent=`N=${N.toLocaleString('id')}, e=${e*100}% → n minimum = ${n}. Distribusikan minimal ${nExtra} kuesioner (tambah 20% untuk antisipasi non-response).`;
+  document.getElementById('sl-r').classList.add('show');
+}
+function hitungCochran() {
+  const Z=parseFloat(document.getElementById('co-z').value);
+  const p=parseFloat(document.getElementById('co-p').value);
+  const e=parseFloat(document.getElementById('co-e').value);
+  if(p<.01||p>.99){alert('p harus antara 0.01–0.99');return;}
+  const n=Math.ceil(Z*Z*p*(1-p)/(e*e));
+  document.getElementById('co-n').textContent=n;
+  document.getElementById('co-note').textContent=`Z=${Z}, p=${p}, e=${e*100}% → n=${n}. Jika N diketahui, gunakan koreksi FPC di kalkulator terakhir.`;
+  document.getElementById('co-r').classList.add('show');
+}
+function hitungPLS() {
+  const a=parseInt(document.getElementById('pls-a').value);
+  const i=parseInt(document.getElementById('pls-i').value);
+  if(!a||!i){alert('Isi jumlah jalur dan indikator.');return;}
+  const base=Math.max(a,i)*10;
+  const final=Math.max(base,100);
+  document.getElementById('pls-n').textContent=final;
+  document.getElementById('pls-note').textContent=`10×max(${a},${i})=${base}. Batas minimum Hair et al. ≥100. Target optimal n≥200. ⚠ Verifikasi dengan G*Power atau SmartPLS 4 power analysis (Hair et al., 2022).`;
+  document.getElementById('pls-r').classList.add('show');
+}
+function hitungReg() {
+  const m=parseInt(document.getElementById('rg-m').value);
+  const e=document.getElementById('rg-e').value;
+  if(!m){alert('Masukkan jumlah IV.');return;}
+  const green=50+8*m;
+  // Nilai G*Power aktual (α=0.05, power=0.80) berdasarkan Cohen (1988)
+  // f²=0.35 (besar), f²=0.15 (sedang), f²=0.02 (kecil)
+  const gpAktual={besar:Math.ceil(25+5*m),sedang:Math.ceil(55+9*m),kecil:Math.ceil(485+25*m)}[e];
+  const final=Math.max(green,gpAktual,50);
+  const warningKecil = e==='kecil' ? ' ⚠ Efek kecil membutuhkan n sangat besar. Verifikasi dengan software G*Power secara langsung.' : '';
+  document.getElementById('rg-n').textContent=final;
+  document.getElementById('rg-note').textContent=`Green (1991): 50+8×${m}=${green}. G*Power est. α=0.05, power=0.80 (${e}): ~${gpAktual}. Ambil terbesar: ${final}.${warningKecil}`;
+  document.getElementById('rg-r').classList.add('show');
+}
+function hitungStrat() {
+  const n=parseInt(document.getElementById('st-n').value);
+  const ni=parseInt(document.getElementById('st-ni').value);
+  const N=parseInt(document.getElementById('st-N').value);
+  if(!n||!ni||!N){alert('Isi semua kolom.');return;}
+  const result=Math.ceil(n*(ni/N));
+  document.getElementById('st-ni-out').textContent=result;
+  document.getElementById('st-note').textContent=`nᵢ = ${n} × (${ni}/${N}) = ${result} sampel untuk strata ini. Ulangi untuk setiap strata agar total = ${n}.`;
+  document.getElementById('st-r').classList.add('show');
+}
+function hitungFPC() {
+  const n0=parseInt(document.getElementById('fp-n0').value);
+  const N=parseInt(document.getElementById('fp-N').value);
+  if(!n0||!N){alert('Isi n dan N.');return;}
+  const nFPC=Math.ceil((n0*N)/(n0+N-1));
+  const pct=((n0/N)*100).toFixed(1);
+  document.getElementById('fp-n').textContent=nFPC;
+  document.getElementById('fp-note').textContent=`n/N=${pct}% → ${parseFloat(pct)>5?'FPC perlu diterapkan':'FPC tidak wajib (n/N<5%)'}. nFPC = (${n0}×${N})/(${n0}+${N}-1) = ${nFPC}.`;
+  document.getElementById('fp-r').classList.add('show');
+}
+function hitungDistrib() {
+  const n=parseInt(document.getElementById('rr-n').value);
+  const r=parseInt(document.getElementById('rr-r').value)/100;
+  if(!n){alert('Masukkan target sampel.');return;}
+  const dist=Math.ceil(n/r);
+  const extra=Math.ceil(dist*1.10);
+  document.getElementById('rr-out').textContent=dist;
+  document.getElementById('rr-note').textContent=`Target n=${n}, response rate=${r*100}% → distribusikan ${dist} kuesioner. Dengan buffer 10% untuk data invalid: ${extra} kuesioner.`;
+  document.getElementById('rr-result').classList.add('show');
+}
+</script>
+</body>
+</html>
