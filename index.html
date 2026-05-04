@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panduan Alat Analisis Skripsi</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#F7F5F0; --surface:#FFFFFF; --surface2:#F0EDE6; --border:#E2DDD4;
+  --text:#1A1714; --text2:#6B6560; --text3:#A09B95;
+  --q:#2C4A3E;   --q-light:#E8F0ED;
+  --l:#5B3A7E;   --l-light:#F0EBF8;
+  --m:#8B3A2A;   --m-light:#FAEEE9;
+  --amber:#B87333; --amber-light:#FDF3E7;
+  --teal:#2C6B6B; --teal-light:#E8F5F5;
+  --purple:#4A3A6B; --purple-light:#F0EDF8;
+  --pink:#8B2252; --pink-light:#FDE8F0;
+  --radius:12px; --radius-sm:7px;
+  --shadow:0 1px 3px rgba(0,0,0,0.06);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6;}
+
+/* NAV */
+nav{background:var(--surface);border-bottom:1px solid var(--border);padding:10px 2rem;display:flex;align-items:center;gap:8px;font-size:13px;flex-wrap:wrap;}
+nav a{color:var(--q);text-decoration:none;font-weight:500;}
+nav a:hover{text-decoration:underline;}
+nav span{color:var(--text3);}
+
+/* HEADER */
+header{padding:3rem 2rem 2.5rem;text-align:center;position:relative;overflow:hidden;}
+header.hq{background:linear-gradient(135deg,#1E3D32 0%,#2C4A3E 60%,#3D6B5A 100%);}
+header.hl{background:linear-gradient(135deg,#3A1F5E 0%,#5B3A7E 60%,#7A5AA0 100%);}
+header.hm{background:linear-gradient(135deg,#5E2010 0%,#8B3A2A 60%,#B05A44 100%);}
+header::before{content:'';position:absolute;top:-60px;right:-60px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,0.04);}
+header::after{content:'';position:absolute;bottom:-40px;left:-40px;width:140px;height:140px;border-radius:50%;background:rgba(255,255,255,0.04);}
+.h-eyebrow{font-size:11px;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:10px;}
+header h1{font-family:'Instrument Serif',serif;font-size:clamp(1.8rem,4.5vw,2.8rem);font-weight:400;color:#fff;line-height:1.2;margin-bottom:12px;}
+header h1 em{font-style:italic;color:rgba(255,255,255,0.65);}
+header p{font-size:14px;color:rgba(255,255,255,0.55);max-width:520px;margin:0 auto;}
+
+/* PARADIGM SWITCHER */
+.pswitcher{background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:20;}
+.pswitcher-inner{max-width:920px;margin:0 auto;display:flex;padding:0 1.5rem;}
+.ptab{flex:1;text-align:center;padding:14px 10px;font-size:13px;font-weight:500;color:var(--text3);cursor:pointer;border-bottom:3px solid transparent;transition:all 0.15s;user-select:none;}
+.ptab:hover{color:var(--text);}
+.ptab.pq.active{color:var(--q);border-bottom-color:var(--q);}
+.ptab.pl.active{color:var(--l);border-bottom-color:var(--l);}
+.ptab.pm.active{color:var(--m);border-bottom-color:var(--m);}
+.ptab-icon{display:block;font-size:18px;margin-bottom:3px;}
+.ptab span.label{font-size:11px;display:block;}
+
+/* MAIN */
+main{max-width:920px;margin:0 auto;padding:2rem 1.5rem 5rem;}
+.paradigm-panel{display:none;}
+.paradigm-panel.active{display:block;}
+
+/* SUB-TABS */
+.subtabs{display:flex;gap:4px;margin-bottom:1.5rem;background:var(--surface);border:1px solid var(--border);border-radius:40px;padding:5px;}
+.stab{flex:1;text-align:center;padding:7px 10px;border-radius:30px;font-size:12px;font-weight:500;color:var(--text3);cursor:pointer;transition:all 0.15s;user-select:none;}
+.stab:hover{color:var(--text);}
+.stab.active.sq{background:var(--q);color:#fff;}
+.stab.active.sl{background:var(--l);color:#fff;}
+.stab.active.sm{background:var(--m);color:#fff;}
+.stab span{display:block;font-size:10px;opacity:0.75;margin-top:1px;}
+
+/* FILTER */
+.filter-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.4rem 1.5rem;margin-bottom:10px;transition:box-shadow 0.2s;box-shadow:var(--shadow);}
+.filter-card.active-q{border-color:var(--q);box-shadow:0 0 0 3px rgba(44,74,62,0.08);}
+.filter-card.active-l{border-color:var(--l);box-shadow:0 0 0 3px rgba(91,58,126,0.08);}
+.filter-card.active-m{border-color:var(--m);box-shadow:0 0 0 3px rgba(139,58,42,0.08);}
+.fmeta{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.fnum{width:26px;height:26px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:var(--text2);flex-shrink:0;transition:all 0.2s;}
+.fnum.dq{background:var(--q);border-color:var(--q);color:#fff;}
+.fnum.dl{background:var(--l);border-color:var(--l);color:#fff;}
+.fnum.dm{background:var(--m);border-color:var(--m);color:#fff;}
+.ftag{font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);}
+.fq-text{font-size:14.5px;font-weight:500;color:var(--text);margin-bottom:12px;line-height:1.5;}
+.pills{display:flex;flex-wrap:wrap;gap:8px;}
+.pill{cursor:pointer;padding:7px 14px;border-radius:30px;border:1px solid var(--border);font-size:13px;color:var(--text2);background:var(--bg);transition:all 0.15s;user-select:none;}
+.pill:hover.pq{border-color:var(--q);color:var(--q);background:var(--q-light);}
+.pill:hover.pl{border-color:var(--l);color:var(--l);background:var(--l-light);}
+.pill:hover.pm{border-color:var(--m);color:var(--m);background:var(--m-light);}
+.pill.aq{background:var(--q);border-color:var(--q);color:#fff;font-weight:500;}
+.pill.al{background:var(--l);border-color:var(--l);color:#fff;font-weight:500;}
+.pill.am{background:var(--m);border-color:var(--m);color:#fff;font-weight:500;}
+
+/* DIVIDER */
+.divider{display:flex;align-items:center;gap:12px;margin:1.8rem 0 1.4rem;}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border);}
+.divider span{font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);white-space:nowrap;}
+
+/* RESULT CARDS */
+.rcards{display:flex;flex-direction:column;gap:14px;}
+.rcard{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);}
+.rcard-hd{padding:15px 20px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+.rcard-name{font-weight:600;font-size:15px;color:var(--text);}
+.rcard-sub{font-size:12px;color:var(--text3);margin-top:2px;}
+.rcard-grid{display:grid;grid-template-columns:1fr 1fr;}
+.rsec{padding:13px 18px;border-right:1px solid var(--border);border-bottom:1px solid var(--border);}
+.rsec:nth-child(even){border-right:none;}
+.rsec.full{grid-column:1/-1;border-right:none;border-bottom:none;}
+.rsec.fullb{grid-column:1/-1;border-right:none;}
+.slabel{font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);margin-bottom:5px;}
+.scontent{font-size:13px;color:var(--text2);line-height:1.65;}
+
+/* JUDUL LIST */
+.jlist{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:5px;}
+.jlist li{font-size:12.5px;color:var(--text2);padding:7px 12px 7px 28px;background:var(--bg);border-radius:var(--radius-sm);border:1px solid var(--border);line-height:1.5;position:relative;}
+.jlist li::before{content:attr(data-n);position:absolute;left:10px;top:8px;font-size:10px;font-weight:700;opacity:0.55;}
+.jlist.jq li::before{color:var(--q);}
+.jlist.jl li::before{color:var(--l);}
+.jlist.jm li::before{color:var(--m);}
+
+/* BADGES */
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;white-space:nowrap;}
+.b-param{background:var(--teal-light);color:var(--teal);}
+.b-nonparam{background:var(--amber-light);color:var(--amber);}
+.b-sem{background:var(--pink-light);color:var(--pink);}
+.b-ts{background:var(--purple-light);color:var(--purple);}
+.b-kuali{background:var(--l-light);color:var(--l);}
+.b-mix{background:var(--m-light);color:var(--m);}
+
+/* WARN / INFO */
+.warn{background:var(--amber-light);border:1px solid #DEB97A;border-left:3px solid var(--amber);border-radius:var(--radius-sm);padding:11px 15px;font-size:13px;color:#7A4800;margin-bottom:1.2rem;line-height:1.6;}
+.info-box{background:var(--l-light);border:1px solid #C9AAED;border-left:3px solid var(--l);border-radius:var(--radius-sm);padding:11px 15px;font-size:13px;color:#3D1F60;margin-bottom:1.2rem;line-height:1.6;}
+.mix-box{background:var(--m-light);border:1px solid #E0A890;border-left:3px solid var(--m);border-radius:var(--radius-sm);padding:11px 15px;font-size:13px;color:#5E2010;margin-bottom:1.2rem;line-height:1.6;}
+
+/* EMPTY */
+.empty{text-align:center;padding:3rem 1rem;color:var(--text3);}
+.empty .ico{font-size:2.5rem;margin-bottom:10px;opacity:0.35;}
+.empty p{font-size:14px;}
+
+.rh{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:12px;gap:12px;flex-wrap:wrap;}
+.rt{font-family:'Instrument Serif',serif;font-size:1.2rem;font-weight:400;}
+.rc{font-size:12px;color:var(--text3);background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:3px 10px;}
+
+/* TRUSTWORTHINESS TABLE */
+.tw-table{width:100%;border-collapse:collapse;font-size:13px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;}
+.tw-table th{background:var(--surface2);padding:10px 14px;text-align:left;font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--text3);border-bottom:1px solid var(--border);}
+.tw-table td{padding:11px 14px;border-bottom:1px solid var(--border);color:var(--text2);line-height:1.5;vertical-align:top;}
+.tw-table tr:last-child td{border-bottom:none;}
+.tw-table tr:hover td{background:var(--bg);}
+.tw-table td:first-child{font-weight:500;color:var(--text);}
+
+/* LEGEND */
+.legend{display:flex;flex-wrap:wrap;gap:10px;margin-top:1.2rem;}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text2);}
+
+/* COMPARISON TABLE */
+.comp-table{width:100%;border-collapse:collapse;font-size:12.5px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:1.5rem;}
+.comp-table th{padding:10px 12px;text-align:left;font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--text3);border-bottom:1px solid var(--border);}
+.comp-table th:first-child{background:var(--surface2);}
+.comp-table th.hq{background:var(--q-light);color:var(--q);}
+.comp-table th.hl{background:var(--l-light);color:var(--l);}
+.comp-table th.hm{background:var(--m-light);color:var(--m);}
+.comp-table td{padding:10px 12px;border-bottom:1px solid var(--border);color:var(--text2);vertical-align:top;line-height:1.5;}
+.comp-table tr:last-child td{border-bottom:none;}
+.comp-table td:first-child{font-weight:500;color:var(--text);background:var(--surface2);}
+
+footer{text-align:center;padding:2rem;font-size:12px;color:var(--text3);border-top:1px solid var(--border);}
+
+@media(max-width:640px){
+  .rcard-grid{grid-template-columns:1fr;}
+  .rsec{border-right:none!important;}
+  .ptab span.label{display:none;}
+  .subtabs{overflow-x:auto;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <span style="color:var(--text);font-weight:500">🔬 Panduan Analisis Skripsi</span>
+  <span>/</span>
+  <a href="sampling.html">📊 Metode Sampling</a>
+</nav>
+
+<!-- HEADER changes per paradigm -->
+<header id="main-header" class="hq">
+  <div class="h-eyebrow" id="h-eyebrow">Metodologi Penelitian — Kuantitatif</div>
+  <h1 id="h-title">Panduan Alat <em>Analisis Kuantitatif</em></h1>
+  <p id="h-sub">Tentukan alat analisis statistik terbaik berdasarkan tujuan, skala data, dan asumsi penelitianmu.</p>
+</header>
+
+<!-- PARADIGM SWITCHER -->
+<div class="pswitcher">
+  <div class="pswitcher-inner">
+    <div class="ptab pq active" data-p="kuantitatif">
+      <span class="ptab-icon">📊</span>Kuantitatif<span class="label">Statistik & Angka</span>
+    </div>
+    <div class="ptab pl" data-p="kualitatif">
+      <span class="ptab-icon">📖</span>Kualitatif<span class="label">Makna & Narasi</span>
+    </div>
+    <div class="ptab pm" data-p="mixed">
+      <span class="ptab-icon">🔀</span>Mixed Methods<span class="label">Gabungan</span>
+    </div>
+  </div>
+</div>
+
+<main>
+
+<!-- ═══════════════════════════════════════════════════
+     PARADIGM 1: KUANTITATIF
+═══════════════════════════════════════════════════ -->
+<div class="paradigm-panel active" id="panel-kuantitatif">
+
+  <div class="subtabs" id="stabs-q">
+    <div class="stab sq active" data-st="q-filter">Filter Alat<span>Self-Assessment</span></div>
+    <div class="stab sq" data-st="q-asumsi">Uji Asumsi<span>Prasyarat</span></div>
+    <div class="stab sq" data-st="q-valid">Validitas & Reliabilitas<span>Instrumen</span></div>
+  </div>
+
+  <!-- SUB: FILTER -->
+  <div class="subpanel active" id="q-filter">
+    <div class="filter-card" id="qfc1">
+      <div class="fmeta"><div class="fnum" id="qfn1">1</div><div class="ftag">Filter 1 — Tujuan Penelitian</div></div>
+      <div class="fq-text">Apa yang ingin kamu lakukan terhadap data penelitianmu?</div>
+      <div class="pills" id="qf1"></div>
+    </div>
+    <div class="filter-card" id="qfc2">
+      <div class="fmeta"><div class="fnum" id="qfn2">2</div><div class="ftag">Filter 2 — Skala Pengukuran</div></div>
+      <div class="fq-text">Apa skala pengukuran data utama dalam penelitianmu?</div>
+      <div class="pills" id="qf2"></div>
+    </div>
+    <div class="filter-card" id="qfc3">
+      <div class="fmeta"><div class="fnum" id="qfn3">3</div><div class="ftag">Filter 3 — Uji Asumsi</div></div>
+      <div class="fq-text">Apakah data kamu lolos uji asumsi parametrik (normalitas &amp; homogenitas)?<br><span style="font-size:12px;color:var(--text3);font-weight:400">💡 Jika skala data kamu <strong>Ordinal</strong> atau kamu menggunakan <strong>SEM/Time Series</strong>, pilih "Tidak relevan".</span></div>
+      <div class="pills" id="qf3"></div>
+    </div>
+    <div class="divider"><span>Rekomendasi Alat Analisis Kuantitatif</span></div>
+    <div id="q-warn"></div>
+    <div id="q-result"><div class="empty"><div class="ico">⬆</div><p>Pilih ketiga filter untuk melihat rekomendasi.</p></div></div>
+    <div class="legend">
+      <div class="legend-item"><span class="badge b-param">Parametrik</span>Butuh normalitas & homogenitas</div>
+      <div class="legend-item"><span class="badge b-nonparam">Non-parametrik</span>Bebas asumsi distribusi</div>
+      <div class="legend-item"><span class="badge b-sem">SEM/PLS</span>Model struktural laten</div>
+      <div class="legend-item"><span class="badge b-ts">Time Series</span>Data deret waktu</div>
+    </div>
+  </div>
+
+  <!-- SUB: ASUMSI -->
+  <div class="subpanel" id="q-asumsi" style="display:none">
+    <div class="info-box" style="background:var(--q-light);border-color:#8ABBA8;border-left-color:var(--q);color:#1A3D2A">
+      <strong>Mengapa uji asumsi wajib dilakukan?</strong><br>
+      Alat statistik parametrik dibangun di atas asumsi matematis. Melanggar asumsi ini membuat hasil analisis tidak valid, sekeras apapun kamu berusaha menginterpretasikannya.
+    </div>
+    <div class="rcards">
+      <div class="rcard"><div class="rcard-hd"><div><div class="rcard-name">Uji Normalitas</div><div class="rcard-sub">Apakah distribusi data membentuk kurva normal (bell-shaped)?</div></div></div>
+      <div class="rcard-grid">
+        <div class="rsec"><div class="slabel">Kapan Digunakan</div><div class="scontent">Sebelum menggunakan t-test, ANOVA, atau Pearson: uji normalitas pada <strong>variabel dependen</strong>. Untuk Regresi Linear: uji normalitas pada <strong>residual</strong> (bukan variabel dependen secara langsung), karena asumsi normalitas regresi melekat pada distribusi residual, bukan pada Y itu sendiri.</div></div>
+        <div class="rsec"><div class="slabel">Alat Uji</div><div class="scontent"><strong>Shapiro-Wilk</strong> — untuk n &lt; 50 (lebih akurat untuk sampel kecil)<br><strong>Kolmogorov-Smirnov</strong> — untuk n ≥ 50<br><strong>Q-Q Plot</strong> — inspeksi visual tambahan</div></div>
+        <div class="rsec"><div class="slabel">Interpretasi</div><div class="scontent">p &gt; 0.05 → data normal → lanjutkan parametrik<br>p &lt; 0.05 → data tidak normal → gunakan non-parametrik atau transformasi data</div></div>
+        <div class="rsec"><div class="slabel">Solusi Jika Tidak Normal</div><div class="scontent">Transformasi: log(x), √x, 1/x, Box-Cox<br>Atau langsung pakai alternatif non-parametrik (Spearman, Mann-Whitney, Kruskal-Wallis)</div></div>
+      </div></div>
+
+      <div class="rcard"><div class="rcard-hd"><div><div class="rcard-name">Uji Homogenitas Varians (Levene's Test)</div><div class="rcard-sub">Apakah varians antar kelompok bersifat homogen?</div></div></div>
+      <div class="rcard-grid">
+        <div class="rsec"><div class="slabel">Kapan Digunakan</div><div class="scontent">Sebelum t-test independen dan ANOVA. Membandingkan varians antar kelompok.</div></div>
+        <div class="rsec"><div class="slabel">Alat Uji</div><div class="scontent"><strong>Levene's Test</strong> — paling umum di SPSS<br><strong>Bartlett's Test</strong> — untuk data normal sempurna</div></div>
+        <div class="rsec"><div class="slabel">Interpretasi</div><div class="scontent">p &gt; 0.05 → varians homogen → lanjutkan t-test / ANOVA biasa<br>p &lt; 0.05 → tidak homogen → gunakan Welch's t-test atau Games-Howell</div></div>
+        <div class="rsec"><div class="slabel">Di SPSS</div><div class="scontent">Analyze → Compare Means → Independent Samples T-Test → cek kolom "Levene's Test" di output</div></div>
+      </div></div>
+
+      <div class="rcard"><div class="rcard-hd"><div><div class="rcard-name">Uji Multikolinearitas (VIF)</div><div class="rcard-sub">Apakah variabel independen tidak saling berkorelasi terlalu tinggi?</div></div></div>
+      <div class="rcard-grid">
+        <div class="rsec"><div class="slabel">Kapan Digunakan</div><div class="scontent">Khusus untuk Regresi Linear Berganda (≥2 variabel independen). Tidak diperlukan untuk regresi sederhana.</div></div>
+        <div class="rsec"><div class="slabel">Alat Ukur</div><div class="scontent"><strong>VIF (Variance Inflation Factor)</strong>: VIF &lt; 10 = tidak ada multikolinearitas<br><strong>Tolerance</strong>: &gt; 0.1 = aman</div></div>
+        <div class="rsec"><div class="slabel">Interpretasi</div><div class="scontent">VIF &lt; 5 → aman (ideal)<br>VIF 5–10 → perhatian<br>VIF &gt; 10 → multikolinearitas serius → hapus atau gabung variabel</div></div>
+        <div class="rsec"><div class="slabel">Di SPSS</div><div class="scontent">Analyze → Regression → Linear → Statistics → centang Collinearity diagnostics</div></div>
+      </div></div>
+
+      <div class="rcard"><div class="rcard-hd"><div><div class="rcard-name">Uji Heteroskedastisitas</div><div class="rcard-sub">Apakah varians residual bersifat konstan (homoskedastik)?</div></div></div>
+      <div class="rcard-grid">
+        <div class="rsec"><div class="slabel">Kapan Digunakan</div><div class="scontent">Khusus untuk analisis Regresi Linear. Residual harus bervarians konstan.</div></div>
+        <div class="rsec"><div class="slabel">Alat Uji</div><div class="scontent"><strong>Scatterplot residual</strong> — inspeksi visual<br><strong>Glejser Test</strong> — formal, p &gt; 0.05 = homoskedastik<br><strong>Breusch-Pagan</strong> — di R/EViews</div></div>
+        <div class="rsec"><div class="slabel">Interpretasi Plot</div><div class="scontent">Titik tersebar acak tanpa pola → OK (homoskedastik)<br>Ada pola corong/kipas → heteroskedastisitas → masalah</div></div>
+        <div class="rsec"><div class="slabel">Solusi</div><div class="scontent">Transformasi variabel (log Y), gunakan robust standard errors, atau Weighted Least Squares (WLS)</div></div>
+      </div></div>
+
+      <div class="rcard"><div class="rcard-hd"><div><div class="rcard-name">Uji Autokorelasi (Durbin-Watson)</div><div class="rcard-sub">Apakah residual antar observasi tidak saling berkorelasi?</div></div></div>
+      <div class="rcard-grid">
+        <div class="rsec"><div class="slabel">Kapan Digunakan</div><div class="scontent">Regresi Linear, terutama data time series atau data panel. Jarang kritis untuk data cross-sectional murni.</div></div>
+        <div class="rsec"><div class="slabel">Nilai DW</div><div class="scontent">DW ≈ 2 → tidak ada autokorelasi (ideal)<br>DW &lt; 1.5 → autokorelasi positif<br>DW &gt; 2.5 → autokorelasi negatif</div></div>
+        <div class="rsec full"><div class="slabel">Solusi</div><div class="scontent">Tambahkan lag variabel, gunakan Cochrane-Orcutt, atau pindah ke model ARIMA/panel data.</div></div>
+      </div></div>
+    </div>
+  </div>
+
+  <!-- SUB: VALIDITAS -->
+  <div class="subpanel" id="q-valid" style="display:none">
+    <div class="info-box" style="background:var(--q-light);border-color:#8ABBA8;border-left-color:var(--q);color:#1A3D2A">
+      <strong>Validitas & Reliabilitas Instrumen</strong> harus diuji sebelum pengumpulan data utama, bukan setelah. Idealnya dilakukan pada uji coba (pilot study) dengan 30 responden.
+    </div>
+    <div class="rcards">
+      <div class="rcard"><div class="rcard-hd"><div><div class="rcard-name">Uji Validitas</div><div class="rcard-sub">Apakah instrumen mengukur apa yang seharusnya diukur?</div></div></div>
+      <div class="rcard-grid">
+        <div class="rsec"><div class="slabel">Validitas Isi (Content Validity)</div><div class="scontent">Penilaian ahli (expert judgment) terhadap relevansi item dengan konstruk. Gunakan CVR (Content Validity Ratio) atau CVI.</div></div>
+        <div class="rsec"><div class="slabel">Validitas Konstruk</div><div class="scontent"><strong>Exploratory Factor Analysis (EFA)</strong> — untuk instrumen baru<br><strong>Confirmatory Factor Analysis (CFA)</strong> — untuk instrumen yang sudah ada teorinya<br>Item valid jika loading factor ≥ 0.5</div></div>
+        <div class="rsec"><div class="slabel">Validitas Kriteria (Pearson)</div><div class="scontent">Korelasi skor item dengan skor total. Item valid jika r-hitung &gt; r-tabel (biasanya &gt; 0.30 untuk n=30).</div></div>
+        <div class="rsec"><div class="slabel">AVE (untuk PLS-SEM)</div><div class="scontent">Average Variance Extracted &gt; 0.5 = validitas konvergen terpenuhi. Discriminant validity: √AVE &gt; korelasi antar konstruk.</div></div>
+      </div></div>
+
+      <div class="rcard"><div class="rcard-hd"><div><div class="rcard-name">Uji Reliabilitas</div><div class="rcard-sub">Apakah instrumen menghasilkan pengukuran yang konsisten?</div></div></div>
+      <div class="rcard-grid">
+        <div class="rsec"><div class="slabel">Cronbach Alpha (α)</div><div class="scontent">Paling umum digunakan. α ≥ 0.70 = reliabel. α ≥ 0.80 = sangat reliabel. α 0.60–0.69 = batas bawah, perlu revisi item serius. α &lt; 0.60 = <strong>tidak reliabel</strong> — skala bermasalah, harus direvisi atau diganti sebelum digunakan.</div></div>
+        <div class="rsec"><div class="slabel">Composite Reliability (CR)</div><div class="scontent">Digunakan dalam PLS-SEM. CR &gt; 0.70 = reliabel. Lebih robust dari Alpha karena mempertimbangkan loading.</div></div>
+        <div class="rsec"><div class="slabel">Split-Half / Test-Retest</div><div class="scontent">Split-half: bagi item jadi dua bagian, korelasi keduanya. Test-retest: ukur dua kali, korelasi hasilnya &gt; 0.70.</div></div>
+        <div class="rsec"><div class="slabel">Di SPSS</div><div class="scontent">Analyze → Scale → Reliability Analysis → pilih Alpha → masukkan semua item satu konstruk.</div></div>
+      </div></div>
+    </div>
+  </div>
+</div><!-- end panel-kuantitatif -->
+
+
+<!-- ═══════════════════════════════════════════════════
+     PARADIGM 2: KUALITATIF
+═══════════════════════════════════════════════════ -->
+<div class="paradigm-panel" id="panel-kualitatif">
+
+  <div class="subtabs" id="stabs-l">
+    <div class="stab sl active" data-st="l-filter">Pilih Tradisi<span>Self-Assessment</span></div>
+    <div class="stab sl" data-st="l-trust">Keabsahan Data<span>Trustworthiness</span></div>
+    <div class="stab sl" data-st="l-beda">Perbedaan dgn Kuantitatif<span>Perbandingan</span></div>
+  </div>
+
+  <!-- SUB: FILTER KUALITATIF -->
+  <div class="subpanel active" id="l-filter">
+    <div class="info-box">
+      <strong>Paradigma Kualitatif:</strong> Tidak ada uji normalitas atau asumsi statistik. Filter di sini berbasis <em>pertanyaan penelitian</em> dan <em>tradisi penelitian</em> yang kamu anut. Peneliti adalah instrumen utama.
+    </div>
+    <div class="filter-card" id="lfc1">
+      <div class="fmeta"><div class="fnum" id="lfn1">1</div><div class="ftag">Filter L1 — Fokus Penelitian</div></div>
+      <div class="fq-text">Apa fokus utama pertanyaan penelitianmu?</div>
+      <div class="pills" id="lf1"></div>
+    </div>
+    <div class="filter-card" id="lfc2">
+      <div class="fmeta"><div class="fnum" id="lfn2">2</div><div class="ftag">Filter L2 — Sumber Data</div></div>
+      <div class="fq-text">Dari mana data utama penelitianmu berasal?</div>
+      <div class="pills" id="lf2"></div>
+    </div>
+    <div class="filter-card" id="lfc3">
+      <div class="fmeta"><div class="fnum" id="lfn3">3</div><div class="ftag">Filter L3 — Tujuan Akhir</div></div>
+      <div class="fq-text">Apa yang ingin dihasilkan dari penelitian ini?</div>
+      <div class="pills" id="lf3"></div>
+    </div>
+    <div class="divider"><span>Rekomendasi Tradisi & Alat Analisis Kualitatif</span></div>
+    <div id="l-warn"></div>
+    <div id="l-result"><div class="empty"><div class="ico">⬆</div><p>Pilih ketiga filter untuk melihat rekomendasi.</p></div></div>
+  </div>
+
+  <!-- SUB: TRUSTWORTHINESS -->
+  <div class="subpanel" id="l-trust" style="display:none">
+    <div class="info-box">
+      <strong>Dalam penelitian kualitatif, "validitas" dan "reliabilitas" tidak digunakan.</strong> Sebagai gantinya, Lincoln & Guba (1985) menetapkan empat kriteria keabsahan yang harus dipenuhi.
+    </div>
+    <div style="overflow-x:auto">
+    <table class="tw-table">
+      <thead><tr><th>Kriteria Kualitatif</th><th>Analog Kuantitatif</th><th>Definisi</th><th>Strategi Pemenuhan</th></tr></thead>
+      <tbody>
+        <tr><td>Kredibilitas (Credibility)</td><td>Validitas Internal</td><td>Apakah temuan mencerminkan realitas yang dialami partisipan?</td><td>Triangulasi (sumber, metode, teori), member checking, prolonged engagement, peer debriefing</td></tr>
+        <tr><td>Transferabilitas (Transferability)</td><td>Validitas Eksternal</td><td>Apakah temuan bisa diterapkan di konteks lain?</td><td>Thick description: deskripsikan konteks secara sangat detail agar pembaca bisa menilai sendiri relevansinya</td></tr>
+        <tr><td>Dependabilitas (Dependability)</td><td>Reliabilitas</td><td>Apakah proses penelitian konsisten dan bisa dilacak?</td><td>Audit trail: dokumentasikan semua keputusan metodologis, kode, memo, dan catatan lapangan</td></tr>
+        <tr><td>Konfirmabilitas (Confirmability)</td><td>Objektivitas</td><td>Apakah temuan berasal dari data, bukan bias peneliti?</td><td>Refleksivitas (reflexivity journal), confirmability audit, negative case analysis</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <div style="margin-top:1.5rem" class="rcard">
+      <div class="rcard-hd"><div><div class="rcard-name">Triangulasi — Strategi Kredibilitas Utama</div><div class="rcard-sub">Menggunakan lebih dari satu sumber/metode untuk mengkonfirmasi temuan</div></div></div>
+      <div class="rcard-grid">
+        <div class="rsec"><div class="slabel">Triangulasi Sumber</div><div class="scontent">Data dikumpulkan dari berbagai sumber berbeda (manajer, karyawan, dokumen) untuk mengonfirmasi konsistensi temuan.</div></div>
+        <div class="rsec"><div class="slabel">Triangulasi Metode</div><div class="scontent">Kombinasi wawancara + observasi + dokumen. Jika ketiganya mengarah ke temuan yang sama = kredibilitas tinggi.</div></div>
+        <div class="rsec"><div class="slabel">Triangulasi Teori</div><div class="scontent">Interpretasi data dengan beberapa lensa teori berbeda untuk melihat apakah hasilnya konsisten.</div></div>
+        <div class="rsec"><div class="slabel">Member Checking</div><div class="scontent">Kembalikan hasil analisis ke partisipan untuk dikonfirmasi apakah interpretasi peneliti sudah tepat dan akurat.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUB: PERBEDAAN -->
+  <div class="subpanel" id="l-beda" style="display:none">
+    <div style="overflow-x:auto">
+    <table class="comp-table">
+      <thead><tr><th>Dimensi</th><th class="hq">Kuantitatif</th><th class="hl">Kualitatif</th></tr></thead>
+      <tbody>
+        <tr><td>Ontologi</td><td>Realitas objektif, dapat diukur</td><td>Realitas dikonstruksi, subjektif</td></tr>
+        <tr><td>Epistemologi</td><td>Peneliti terpisah dari objek</td><td>Peneliti adalah bagian dari penelitian</td></tr>
+        <tr><td>Tujuan</td><td>Uji hipotesis, generalisasi</td><td>Eksplorasi makna, bangun teori</td></tr>
+        <tr><td>Logika</td><td>Deduktif (teori → data)</td><td>Induktif (data → teori)</td></tr>
+        <tr><td>Pertanyaan</td><td>"Berapa?" "Seberapa besar?" "Apakah ada pengaruh?"</td><td>"Apa?" "Bagaimana?" "Mengapa?" "Apa maknanya?"</td></tr>
+        <tr><td>Sampel</td><td>Besar, acak, representatif</td><td>Kecil, purposive, hingga saturasi</td></tr>
+        <tr><td>Data</td><td>Angka, skor, frekuensi</td><td>Kata, teks, gambar, video, observasi</td></tr>
+        <tr><td>Analisis</td><td>Statistik (SPSS, R, Python)</td><td>Coding, theming, interpretasi (NVivo, Atlas.ti)</td></tr>
+        <tr><td>Output</td><td>p-value, koefisien, tabel statistik</td><td>Tema, narasi, konsep, teori baru</td></tr>
+        <tr><td>Keabsahan</td><td>Validitas & Reliabilitas</td><td>Kredibilitas, Transferabilitas, Dependabilitas, Konfirmabilitas</td></tr>
+        <tr><td>Generalisasi</td><td>Statistikal (ke populasi)</td><td>Analitik / teoritis (ke konsep, bukan populasi)</td></tr>
+        <tr><td>Posisi peneliti</td><td>Netral, objektif</td><td>Refleksif, terlibat</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+</div><!-- end panel-kualitatif -->
+
+
+<!-- ═══════════════════════════════════════════════════
+     PARADIGM 3: MIXED METHODS
+═══════════════════════════════════════════════════ -->
+<div class="paradigm-panel" id="panel-mixed">
+
+  <div class="subtabs" id="stabs-m">
+    <div class="stab sm active" data-st="m-filter">Pilih Desain<span>Self-Assessment</span></div>
+    <div class="stab sm" data-st="m-kapan">Kapan Mixed Methods?<span>Panduan</span></div>
+  </div>
+
+  <!-- SUB: FILTER MIXED -->
+  <div class="subpanel active" id="m-filter">
+    <div class="mix-box">
+      <strong>Mixed Methods</strong> bukan sekadar menggabungkan kuesioner dan wawancara. Ini adalah desain penelitian yang terstruktur dengan logika integrasi yang jelas antara data kuantitatif dan kualitatif (Creswell & Plano Clark, 2018).
+    </div>
+    <div class="filter-card" id="mfc1">
+      <div class="fmeta"><div class="fnum" id="mfn1">1</div><div class="ftag">Filter M1 — Urutan Pengumpulan Data</div></div>
+      <div class="fq-text">Bagaimana urutan pengumpulan data kuantitatif dan kualitatif dalam penelitianmu?</div>
+      <div class="pills" id="mf1"></div>
+    </div>
+    <div class="filter-card" id="mfc2">
+      <div class="fmeta"><div class="fnum" id="mfn2">2</div><div class="ftag">Filter M2 — Prioritas / Bobot</div></div>
+      <div class="fq-text">Komponen mana yang menjadi inti penelitianmu?</div>
+      <div class="pills" id="mf2"></div>
+    </div>
+    <div class="filter-card" id="mfc3">
+      <div class="fmeta"><div class="fnum" id="mfn3">3</div><div class="ftag">Filter M3 — Tujuan Integrasi</div></div>
+      <div class="fq-text">Apa tujuan menggabungkan kedua jenis data tersebut?</div>
+      <div class="pills" id="mf3"></div>
+    </div>
+    <div class="divider"><span>Rekomendasi Desain Mixed Methods</span></div>
+    <div id="m-warn"></div>
+    <div id="m-result"><div class="empty"><div class="ico">⬆</div><p>Pilih ketiga filter untuk melihat rekomendasi desain Mixed Methods.</p></div></div>
+  </div>
+
+  <!-- SUB: KAPAN MIXED METHODS -->
+  <div class="subpanel" id="m-kapan" style="display:none">
+    <div class="rcards">
+      <div class="rcard"><div class="rcard-hd"><div><div class="rcard-name">Gunakan Mixed Methods JIKA…</div></div></div>
+      <div style="padding:16px 20px">
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:10px">
+          <li style="padding:10px 14px;background:var(--m-light);border-radius:8px;font-size:13px;color:var(--text2);border:1px solid #E0A890"><strong style="color:var(--m)">✅ Pertanyaan penelitian membutuhkan keduanya</strong> — Angka menunjukkan BERAPA BESAR masalahnya, narasi menjelaskan MENGAPA masalah itu terjadi.</li>
+          <li style="padding:10px 14px;background:var(--m-light);border-radius:8px;font-size:13px;color:var(--text2);border:1px solid #E0A890"><strong style="color:var(--m)">✅ Hasil kuantitatif perlu penjelasan lebih dalam</strong> — Statistik menunjukkan korelasi signifikan, tapi mengapa? Wawancara menjawabnya.</li>
+          <li style="padding:10px 14px;background:var(--m-light);border-radius:8px;font-size:13px;color:var(--text2);border:1px solid #E0A890"><strong style="color:var(--m)">✅ Membangun instrumen dari eksplorasi awal</strong> — Kualitatif dulu untuk memahami konstruk, lalu buat kuesioner berdasarkan temuan.</li>
+          <li style="padding:10px 14px;background:var(--m-light);border-radius:8px;font-size:13px;color:var(--text2);border:1px solid #E0A890"><strong style="color:var(--m)">✅ Triangulasi untuk validasi silang</strong> — Membuktikan temuan dari dua arah berbeda untuk meningkatkan kepercayaan.</li>
+        </ul>
+      </div></div>
+
+      <div class="rcard"><div class="rcard-hd"><div><div class="rcard-name">JANGAN Gunakan Mixed Methods JIKA…</div></div></div>
+      <div style="padding:16px 20px">
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:10px">
+          <li style="padding:10px 14px;background:#FAEAEA;border-radius:8px;font-size:13px;color:#5A2020;border:1px solid #E0A0A0"><strong style="color:var(--red,#8B2B2B)">❌ Sekadar menambahkan wawancara agar "terlihat lengkap"</strong> — Mixed methods bukan pelengkap. Integrasi harus bermakna dan direncanakan sejak awal.</li>
+          <li style="padding:10px 14px;background:#FAEAEA;border-radius:8px;font-size:13px;color:#5A2020;border:1px solid #E0A0A0"><strong style="color:var(--red,#8B2B2B)">❌ Satu metode sudah cukup menjawab pertanyaan</strong> — Jika kuesioner saja sudah menjawab tujuanmu, tambahan wawancara hanya membuang waktu.</li>
+          <li style="padding:10px 14px;background:#FAEAEA;border-radius:8px;font-size:13px;color:#5A2020;border:1px solid #E0A0A0"><strong style="color:var(--red,#8B2B2B)">❌ Sumber daya tidak memadai</strong> — Mixed methods membutuhkan dua kali upaya. Jika waktu dan akses terbatas, pilih satu paradigma dan lakukan dengan sangat baik.</li>
+        </ul>
+      </div></div>
+
+      <div class="rcard"><div class="rcard-hd"><div><div class="rcard-name">Tantangan Utama Mixed Methods di Skripsi</div></div></div>
+      <div class="rcard-grid">
+        <div class="rsec"><div class="slabel">Waktu & Sumber Daya</div><div class="scontent">Harus menguasai dua paradigma sekaligus. Waktu pengumpulan dan analisis data berlipat ganda dibanding satu paradigma.</div></div>
+        <div class="rsec"><div class="slabel">Integrasi yang Bermakna</div><div class="scontent">Kesalahan terbesar: menulis bab kuantitatif dan bab kualitatif secara terpisah tanpa benar-benar mengintegrasikan keduanya di pembahasan.</div></div>
+        <div class="rsec"><div class="slabel">Kompetensi Ganda</div><div class="scontent">Harus bisa membaca output SPSS/SmartPLS sekaligus melakukan coding tematik di NVivo. Konsultasi intensif dengan pembimbing sangat disarankan.</div></div>
+        <div class="rsec"><div class="slabel">Jumlah Sampel Berbeda</div><div class="scontent">Sampel kuantitatif (besar, acak) berbeda dari sampel kualitatif (kecil, purposive). Keduanya bisa berasal dari populasi yang sama atau berbeda.</div></div>
+      </div></div>
+    </div>
+  </div>
+</div><!-- end panel-mixed -->
+
+</main>
+<footer>
+  Panduan disusun berdasarkan Stevens (1946), Creswell & Plano Clark (2018), Lincoln & Guba (1985), Braun & Clarke (2006), Hair et al. (2017).<br>
+  Selalu konsultasikan pilihan metode dengan dosen pembimbingmu.
+</footer>
+
+<script>
+// ═══════════════════════ PARADIGM SWITCHING ═══════════════════════
+const headerData = {
+  kuantitatif:{ cls:'hq', eyebrow:'Metodologi Penelitian — Kuantitatif', title:'Panduan Alat <em>Analisis Kuantitatif</em>', sub:'Tentukan alat analisis statistik terbaik berdasarkan tujuan, skala data, dan asumsi penelitianmu.' },
+  kualitatif:{ cls:'hl', eyebrow:'Metodologi Penelitian — Kualitatif', title:'Panduan Alat <em>Analisis Kualitatif</em>', sub:'Pilih tradisi dan teknik analisis yang tepat berdasarkan fokus, sumber data, dan tujuan penelitianmu.' },
+  mixed:{ cls:'hm', eyebrow:'Metodologi Penelitian — Mixed Methods', title:'Panduan Desain <em>Mixed Methods</em>', sub:'Tentukan desain mixed methods yang tepat berdasarkan urutan, prioritas, dan tujuan integrasi datamu.' },
+};
+
+document.querySelectorAll('.ptab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    const p = tab.dataset.p;
+    document.querySelectorAll('.ptab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.paradigm-panel').forEach(pn => pn.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('panel-' + p).classList.add('active');
+    const hd = headerData[p];
+    const h = document.getElementById('main-header');
+    h.className = 'header ' + hd.cls;
+    document.getElementById('h-eyebrow').textContent = hd.eyebrow;
+    document.getElementById('h-title').innerHTML = hd.title;
+    document.getElementById('h-sub').textContent = hd.sub;
+  });
+});
+
+// ═══════════════════════ SUB-TAB SWITCHING ═══════════════════════
+function initSubtabs(tabsId, activeClass) {
+  document.querySelectorAll('#' + tabsId + ' .stab').forEach(st => {
+    st.addEventListener('click', () => {
+      document.querySelectorAll('#' + tabsId + ' .stab').forEach(s => s.classList.remove('active'));
+      st.classList.add('active');
+      // find parent panel and hide all subpanels
+      const parentPanel = st.closest('.paradigm-panel');
+      parentPanel.querySelectorAll('.subpanel').forEach(sp => sp.style.display = 'none');
+      document.getElementById(st.dataset.st).style.display = 'block';
+    });
+  });
+}
+initSubtabs('stabs-q','sq');
+initSubtabs('stabs-l','sl');
+initSubtabs('stabs-m','sm');
+
+// ═══════════════════════ DATA: KUANTITATIF ═══════════════════════
+const qf1opts = [
+  {id:'hubungan', label:'Menguji hubungan / korelasi antar variabel'},
+  {id:'prediksi', label:'Memprediksi berdasarkan pola data'},
+  {id:'perbedaan',label:'Melihat perbedaan antar kelompok'},
+  {id:'sem',      label:'Menguji model struktural / mediasi / moderasi'},
+];
+const qf2opts = [
+  {id:'nominal', label:'Nominal — kategori tanpa urutan'},
+  {id:'ordinal', label:'Ordinal — ada urutan (Skala Likert, Peringkat)'},
+  {id:'interval',label:'Interval — jarak setara, tanpa nol absolut'},
+  {id:'rasio',   label:'Rasio — ada nol absolut (Berat, Pendapatan)'},
+];
+const qf3opts = [
+  {id:'ya',    label:'Ya — data normal & varians homogen'},
+  {id:'tidak', label:'Tidak — gagal uji normalitas / Levene'},
+  {id:'na',    label:'Tidak relevan — SEM/PLS atau time series'},
+];
+
+const QDATA = [
+  {obj:'hubungan',scale:['interval','rasio'],asumsi:'ya',tool:'Korelasi Pearson (r)',sub:'Dua variabel kontinu, distribusi normal',jenis:'param',
+   syarat:'Data interval/rasio, normal pada kedua variabel.',software:'SPSS, R (cor.test), Python (scipy.stats.pearsonr)',
+   catatan:'r mendekati ±1 = korelasi kuat. Laporkan r dan p-value.',
+   judul:['Hubungan antara ROE dan Harga Saham Perusahaan Manufaktur di BEI Periode 2019–2023','Korelasi antara Pertumbuhan Penjualan dan Arus Kas Operasi pada Perusahaan Retail Tbk','Hubungan antara Tingkat Inflasi dan IHSG di Indonesia 2015–2024','Korelasi antara Ukuran Perusahaan dan Nilai Perusahaan pada Sektor Perbankan BEI']},
+  {obj:'hubungan',scale:['ordinal'],asumsi:'na',tool:'Korelasi Spearman (ρ) / Kendall Tau',sub:'Data ordinal — uji asumsi parametrik tidak relevan',jenis:'nonparam',
+   syarat:'Data ordinal (Likert, peringkat). Spearman untuk n ≥ 30; Kendall Tau lebih tepat untuk n < 30 atau banyak tied ranks.',software:'SPSS, R (cor(...,method="spearman") atau method="kendall")',
+   catatan:'⚠ Data ordinal tidak memenuhi syarat parametrik, sehingga filter asumsi normalitas tidak berlaku. Spearman adalah pilihan default; gunakan Kendall Tau jika banyak data kembar (tied ranks) atau sampel sangat kecil. Keduanya robust terhadap outlier.',
+   judul:['Hubungan Persepsi Kualitas Pelayanan dan Kepuasan Nasabah Bank Syariah (Skala Likert)','Korelasi antara Kepuasan Kerja dan Kinerja Karyawan UMKM Sektor Kuliner','Hubungan Persepsi Kemudahan dan Minat Penggunaan Mobile Banking','Hubungan Persepsi Risiko dan Keputusan Investasi Reksa Dana pada Generasi Z','Korelasi Etika Bisnis dan Kepercayaan Konsumen pada UMKM Batik']},
+  {obj:'hubungan',scale:['interval','rasio'],asumsi:'tidak',tool:'Spearman atau Transformasi → Pearson',sub:'Data kontinu tidak memenuhi normalitas',jenis:'nonparam',
+   syarat:'Tidak normal; coba transformasi log/sqrt terlebih dahulu.',software:'SPSS, R, Python',
+   catatan:'Transformasi (log, sqrt, 1/x), uji ulang normalitas, baru Pearson.',
+   judul:['Hubungan Volume Perdagangan dan Volatilitas Harga Saham Sektor Energi BEI','Korelasi Total Aset dan Laba Bersih Perusahaan Fintech di Indonesia','Hubungan Pengeluaran Iklan dan Pendapatan Penjualan Perusahaan FMCG']},
+  {obj:'hubungan',scale:['nominal'],asumsi:'na',tool:"Chi-Square + Cramer's V",sub:'Asosiasi dua variabel kategorik',jenis:'nonparam',
+   syarat:'Tabel silang, frekuensi harapan ≥ 5 per sel.',software:"SPSS (Crosstabs), R (chisq.test()), Python",
+   catatan:"Jika sel < 5 gunakan Fisher's Exact Test. Cramer's V ukur kekuatan asosiasi.",
+   judul:['Hubungan Jenis Kelamin dan Preferensi Metode Pembayaran Digital Konsumen Milenial','Asosiasi Sektor Industri dan Status Kebangkrutan Perusahaan di BEI 2018–2023','Hubungan Jenjang Pendidikan dan Keputusan Investasi Saham Masyarakat Kota Malang']},
+  {obj:'prediksi',scale:['interval','rasio'],asumsi:'ya',tool:'Regresi Linear Sederhana / Berganda',sub:'Prediksi variabel dependen kontinu',jenis:'param',
+   syarat:'Normalitas residual, homoskedastisitas, VIF < 10 (berganda).',software:'SPSS, R (lm()), Python (statsmodels)',
+   catatan:'Wajib cek: Durbin-Watson (autokorelasi), VIF (multikolinearitas), plot residual.',
+   judul:['Pengaruh ROA, DER, dan Ukuran Perusahaan terhadap Harga Saham di BEI','Pengaruh Inflasi, Suku Bunga BI, dan Kurs terhadap IHSG','Pengaruh Biaya Operasional dan Pendapatan Non-Bunga terhadap Profitabilitas Bank','Pengaruh Modal Kerja dan Perputaran Piutang terhadap Profitabilitas UMKM']},
+  {obj:'prediksi',scale:['nominal'],asumsi:'na',tool:'Regresi Logistik (Binary / Multinomial)',sub:'Variabel dependen kategorik/dikotomi',jenis:'param',
+   syarat:'DV dikotomi/multinomial; tidak butuh normalitas IV.',software:'SPSS (Binary Logistic), R (glm()), Python (sklearn)',
+   catatan:'Output: Odds Ratio [exp(B)], Wald. Cek Hosmer-Lemeshow goodness of fit.',
+   judul:['Faktor Penentu Keputusan Pengungkapan Sustainability Report pada Perusahaan LQ45','Prediksi Financial Distress Perusahaan Manufaktur Menggunakan Regresi Logistik','Faktor Penentu Penggunaan Paylater pada Mahasiswa di Kota Surabaya','Pengaruh Karakteristik Perusahaan terhadap Keputusan Hedging di BEI']},
+  {obj:'prediksi',scale:['ordinal'],asumsi:'na',tool:'Regresi Ordinal',sub:'Variabel dependen berskala ordinal bertingkat',jenis:'param',
+   syarat:'DV ordinal berurutan (rendah–sedang–tinggi).',software:'SPSS (Ordinal Regression), R (polr())',
+   catatan:'Uji proportional odds (parallel lines test) sebelum interpretasi.',
+   judul:['Faktor Pemengaruh Tingkat Kepuasan Nasabah (Rendah–Sedang–Tinggi) Bank Digital','Pengaruh Kualitas Audit dan Ukuran Perusahaan terhadap Peringkat Obligasi Korporasi','Determinan Tingkat Kepatuhan Pajak UMKM (Tidak Patuh–Cukup–Patuh) di Kota Blitar']},
+  {obj:'prediksi',scale:['rasio','interval'],asumsi:'na',tool:'ARIMA / Exponential Smoothing',sub:'Prediksi data deret waktu',jenis:'ts',
+   syarat:'Time series, stasioner (uji ADF), minimal 30–50 titik data.',software:'R (forecast::auto.arima), Python (statsmodels), EViews',
+   catatan:'Identifikasi lewat ACF & PACF. Evaluasi dengan MAPE dan RMSE.',
+   judul:['Peramalan Harga Saham BCA Menggunakan Model ARIMA','Prediksi Penerimaan Pajak Indonesia 2025–2027 dengan Metode ARIMA','Peramalan Kurs Rupiah terhadap USD Menggunakan ARIMA-GARCH','Forecasting Permintaan Produk PT XYZ dengan Exponential Smoothing Holt-Winters']},
+  {obj:'perbedaan',scale:['interval','rasio'],asumsi:'ya',tool:'Independent Samples t-test',sub:'2 kelompok independen, data normal',jenis:'param',
+   syarat:'2 kelompok tidak berhubungan, normal, varians homogen.',software:"SPSS, R (t.test()), Python (scipy.stats.ttest_ind)",
+   catatan:"Levene's test dulu. Varians tidak homogen → Welch's t-test.",
+   judul:['Perbedaan Kinerja Keuangan antara Bank Syariah dan Bank Konvensional di Indonesia','Perbedaan Return Saham antara Perusahaan ESG dan Non-ESG di BEI','Perbedaan Profitabilitas UMKM Sebelum dan Sesudah Mendapat KUR BRI']},
+  {obj:'perbedaan',scale:['interval','rasio'],asumsi:'ya',tool:'Paired Samples t-test',sub:'2 pengukuran berpasangan dari subjek yang sama',jenis:'param',
+   syarat:'Data berpasangan, distribusi perbedaan normal.',software:'SPSS, R (t.test(paired=TRUE))',
+   catatan:'Cocok untuk event study (sebelum–sesudah) atau pre-post test.',
+   judul:['Perbedaan Harga Saham Sebelum dan Sesudah Pengumuman Dividen (Event Study)','Perbedaan Kinerja Keuangan Sebelum dan Sesudah Merger & Akuisisi di BEI','Analisis Abnormal Return Sebelum dan Sesudah Pengumuman Stock Split']},
+  {obj:'perbedaan',scale:['interval','rasio'],asumsi:'ya',tool:'One-Way ANOVA',sub:'3 kelompok atau lebih, data normal',jenis:'param',
+   syarat:'≥3 kelompok, normal per kelompok, varians homogen.',software:'SPSS (One-Way ANOVA), R (aov())',
+   catatan:'Jika F signifikan → post-hoc Tukey HSD (homogen) atau Games-Howell.',
+   judul:['Perbedaan ROA antara Perusahaan Skala Kecil, Menengah, dan Besar Sektor Manufaktur','Perbedaan Return Saham berdasarkan Sektor Industri di BEI','Perbedaan Kepuasan Kerja berdasarkan Generasi (Baby Boomer, Gen X, Milenial, Gen Z)','Perbedaan Kinerja Portofolio Reksa Dana Saham, Campuran, dan Pendapatan Tetap']},
+  {obj:'perbedaan',scale:['interval','rasio'],asumsi:'tidak',tool:'Mann-Whitney U Test',sub:'Alternatif non-parametrik Independent t-test',jenis:'nonparam',
+   syarat:'2 kelompok independen, tidak normal atau ordinal.',software:'SPSS, R (wilcox.test()), Python',
+   catatan:'Menguji perbedaan distribusi/median. Laporkan U dan z.',
+   judul:['Perbedaan Persepsi Risiko Investasi antara Investor Laki-laki dan Perempuan','Perbedaan Literasi Keuangan Mahasiswa Ekonomi dan Non-Ekonomi','Perbedaan Kepuasan Konsumen Pengguna Shopee dan Tokopedia']},
+  {obj:'perbedaan',scale:['interval','rasio'],asumsi:'tidak',tool:'Kruskal-Wallis H Test',sub:'Alternatif non-parametrik One-Way ANOVA',jenis:'nonparam',
+   syarat:'≥3 kelompok independen, tidak normal.',software:'SPSS, R (kruskal.test()), Python',
+   catatan:'Jika signifikan → post-hoc Dunn test dengan koreksi Bonferroni.',
+   judul:['Perbedaan Persepsi Kualitas Layanan Perbankan Digital berdasarkan Angkatan','Perbedaan Keputusan Investasi berdasarkan Tingkat Pendapatan Investor Ritel','Perbedaan Kepuasan Nasabah berdasarkan Jenis Produk Asuransi']},
+  {obj:'perbedaan',scale:['nominal'],asumsi:'na',tool:'Chi-Square Test',sub:'Perbedaan proporsi antar kelompok kategorik',jenis:'nonparam',
+   syarat:'Nominal/kategorik, frekuensi harapan ≥ 5 per sel.',software:"SPSS (Crosstabs), R (chisq.test()), Python",
+   catatan:"Jika sel < 5 → Fisher's Exact Test.",
+   judul:['Perbedaan Proporsi Manajemen Laba berdasarkan Sektor Industri di BEI','Perbedaan Pilihan Metode Pembayaran berdasarkan Kelompok Usia Konsumen','Perbedaan Kepatuhan Wajib Pajak berdasarkan Jenis Kelamin di KPP Pratama Blitar']},
+  {obj:'sem',scale:['ordinal','interval','rasio'],asumsi:'na',tool:'PLS-SEM (SmartPLS)',sub:'Model struktural laten — paling populer di skripsi bisnis',jenis:'sem',
+   syarat:'Data Likert OK. Sampel kecil (n ≥ 30 cukup). Model prediktif & eksploratoris.',software:'SmartPLS, WarpPLS, R (seminr)',
+   catatan:'Dua tahap: Outer model (AVE > 0.5, CR > 0.7) → Inner model (path coeff, R², Q²). Bootstrapping untuk mediasi.',
+   judul:['Pengaruh Kualitas Layanan dan Kepercayaan terhadap Loyalitas Pengguna GoPay dengan Kepuasan sebagai Mediasi','Pengaruh Financial Literacy dan Risk Tolerance terhadap Keputusan Investasi Saham Generasi Milenial','Pengaruh GCG terhadap Kinerja Keuangan dan Nilai Perusahaan BUMN Tbk','Pengaruh Brand Image dan Perceived Value terhadap Purchase Intention UMKM Lokal melalui Trust']},
+  {obj:'sem',scale:['interval','rasio'],asumsi:'ya',tool:'CB-SEM (AMOS)',sub:'Model struktural konfirmatoris — untuk uji teori mapan',jenis:'sem',
+   syarat:'Normalitas multivariate, n ≥ 200. Variabel laten reflektif.',software:'AMOS, LISREL, R (lavaan), Mplus',
+   catatan:'Fit: CFI > 0.95, RMSEA < 0.08, SRMR < 0.08. Wajib CFA sebelum SEM.',
+   judul:['Model Struktural Transformational Leadership terhadap Organizational Commitment dan Employee Performance','Pengaruh CSR terhadap Reputasi Perusahaan dan Nilai Pemegang Saham: Pendekatan CB-SEM','Model Tax Compliance: Pengaruh Pengetahuan Pajak dan Sanksi terhadap Kepatuhan Wajib Pajak Badan','Pengembangan Model TAM pada Adopsi E-Faktur oleh PKP di Jawa Timur']},
+];
+
+// ═══════════════════════ DATA: KUALITATIF ═══════════════════════
+const lf1opts = [
+  {id:'pengalaman', label:'Pengalaman, persepsi, atau makna yang dialami individu'},
+  {id:'proses',     label:'Proses, dinamika, atau interaksi sosial suatu fenomena'},
+  {id:'budaya',     label:'Budaya, nilai, atau perilaku kelompok/organisasi'},
+  {id:'isi',        label:'Isi dan makna teks, dokumen, atau komunikasi'},
+];
+const lf2opts = [
+  {id:'wawancara', label:'Wawancara mendalam (in-depth interview)'},
+  {id:'observasi', label:'Observasi / participant observation'},
+  {id:'dokumen',   label:'Dokumen, teks, laporan, media'},
+  {id:'kombinasi', label:'Kombinasi wawancara + observasi + dokumen'},
+];
+const lf3opts = [
+  {id:'deskripsi', label:'Mendeskripsikan esensi atau makna suatu pengalaman'},
+  {id:'teori',     label:'Membangun teori atau model baru dari data'},
+  {id:'pola',      label:'Mengidentifikasi pola atau tema dalam data'},
+  {id:'konteks',   label:'Memahami budaya atau konteks kelompok secara mendalam'},
+];
+
+const LDATA = [
+  {obj:'pengalaman',sumber:['wawancara','kombinasi'],tujuan:['deskripsi'],
+   tool:'Fenomenologi',sub:'Husserl, Merleau-Ponty — esensi pengalaman hidup subjek',jenis:'kuali',
+   tradisi:'Husserlian atau Heideggerian Phenomenology',
+   proses:'Epoché (bracketing) → Wawancara mendalam → Reduksi fenomenologis → Identifikasi tema esensial → Textural & structural description',
+   keabsahan:'Bracketing yang konsisten, member checking, thick description',
+   software:'NVivo, Atlas.ti, atau manual',
+   judul:['Pengalaman Pedagang Pasar Tradisional dalam Menghadapi Persaingan Minimarket: Studi Fenomenologi','Makna Kesuksesan Bisnis bagi Pengusaha Perempuan Sektor UMKM di Kota Blitar','Pengalaman Akuntan Publik dalam Menghadapi Dilema Etika Profesi','Persepsi Mahasiswa Akuntansi terhadap Profesi Auditor di Era Digitalisasi']},
+  {obj:'proses',sumber:['wawancara','kombinasi'],tujuan:['teori'],
+   tool:'Grounded Theory',sub:'Glaser & Strauss (1967) — membangun teori baru dari data',jenis:'kuali',
+   tradisi:'Glaserian atau Straussian Grounded Theory',
+   proses:'Theoretical sampling → Open coding → Axial coding → Selective coding → Core category → Teori substantif',
+   keabsahan:'Theoretical saturation, constant comparative method, memo writing',
+   software:'NVivo, Atlas.ti',
+   judul:['Proses Pengambilan Keputusan Angel Investor pada Startup Digital Indonesia: Grounded Theory','Pembentukan Kepercayaan Konsumen dalam Transaksi E-commerce: Studi Grounded Theory','Dinamika Akuntansi Manajemen pada Perusahaan Keluarga di Jawa Timur','Proses Adaptasi UMKM dalam Mengadopsi Sistem Pembayaran Digital']},
+  {obj:'pengalaman',sumber:['wawancara','kombinasi'],tujuan:['pola'],
+   tool:'Analisis Tematik',sub:'Braun & Clarke (2006) — paling fleksibel dan umum digunakan',jenis:'kuali',
+   tradisi:'Tidak terikat satu paradigma; bisa interpretatif atau konstruktivis',
+   proses:'Familiarisasi data → Koding awal → Pembentukan tema → Review tema → Definisi & penamaan → Laporan',
+   keabsahan:'Triangulasi, peer debriefing, audit trail',
+   software:'NVivo, Atlas.ti, MAXQDA, atau tabel manual',
+   judul:['Strategi Bertahan UMKM Kuliner di Kota Blitar Pasca Pandemi: Analisis Tematik','Pengalaman Nasabah Mengadopsi Internet Banking: Studi Kualitatif Bank Syariah','Tantangan Implementasi SAK EMKM pada Usaha Mikro: Perspektif Pemilik','Persepsi Wirausaha Muda terhadap Akses Permodalan dan Ekosistem Startup Jawa Timur']},
+  {obj:'budaya',sumber:['observasi','kombinasi'],tujuan:['konteks'],
+   tool:'Etnografi',sub:'Spradley & Geertz — memahami budaya kelompok dari dalam',jenis:'kuali',
+   tradisi:'Klasik atau Kritis; Autoetnografi untuk refleksi diri peneliti',
+   proses:'Field entry → Participant observation → Ethnographic interview → Domain/taxonomic/componential analysis → Thick description',
+   keabsahan:'Prolonged engagement, thick description, member checking',
+   software:'NVivo, Atlas.ti, catatan lapangan terstruktur',
+   judul:['Budaya Organisasi dan Praktik Akuntansi pada Perusahaan Keluarga Jawa: Studi Etnografi','Dinamika Budaya Gotong Royong dalam Pengelolaan Keuangan Koperasi Desa','Perilaku Pedagang di Pasar Tradisional dalam Mengelola Keuangan Informal']},
+  {obj:'isi',sumber:['dokumen'],tujuan:['pola'],
+   tool:'Analisis Isi (Content Analysis)',sub:'Manifest & Latent — menganalisis isi teks dan dokumen',jenis:'kuali',
+   tradisi:'Bisa kualitatif (interpretatif) atau kuantitatif (frekuensi kata/tema)',
+   proses:'Tentukan unit analisis → Buat kategori koding → Koding (bisa dua koder) → Uji inter-rater reliability → Analisis pola',
+   keabsahan:'Inter-rater reliability (Cohen\'s Kappa ≥ 0.7), saturation',
+   software:'NVivo, Atlas.ti, MAXQDA, atau manual',
+   judul:['Analisis Pengungkapan Sustainability Report Perusahaan Pertambangan di BEI (Analisis Isi)','Representasi Perempuan dalam Laporan Tahunan Perusahaan Go Public Indonesia','Analisis Framing Pemberitaan Kenaikan Pajak di Media Bisnis Online Indonesia','Pengungkapan Risiko dalam Laporan Keuangan Perbankan Syariah']},
+  {obj:'proses',sumber:['kombinasi'],tujuan:['konteks'],
+   tool:'Studi Kasus',sub:'Yin (2014) — pemahaman mendalam satu kasus spesifik',jenis:'kuali',
+   tradisi:'Single case, multiple case, instrumental, atau collective case study',
+   proses:'Desain kasus → Pengumpulan multi-sumber → Pattern matching → Explanation building → Laporan kasus',
+   keabsahan:'Construct validity (multiple sources), internal validity (pattern matching), reliability (case study protocol)',
+   software:'NVivo, Atlas.ti, atau manual dengan matriks kasus',
+   judul:['Implementasi Akuntansi Biaya Lingkungan pada PT Semen Indonesia: Studi Kasus','Transformasi Digital Koperasi Simpan Pinjam di Era Fintech: Studi Kasus KSP Nasional','Manajemen Krisis Keuangan UMKM Batik Blitar Selama Pandemi: Studi Kasus Ganda','Praktik Corporate Governance pada Perusahaan Startup Unicorn Indonesia']},
+];
+
+// ═══════════════════════ DATA: MIXED METHODS ═══════════════════════
+const mf1opts = [
+  {id:'kual-dulu', label:'Kualitatif dulu, lalu kuantitatif (sequential exploratory)'},
+  {id:'kuan-dulu', label:'Kuantitatif dulu, lalu kualitatif (sequential explanatory)'},
+  {id:'bersamaan', label:'Keduanya berjalan bersamaan (concurrent / parallel)'},
+];
+const mf2opts = [
+  {id:'kuan-dom', label:'Kuantitatif lebih dominan (kual sebagai pendukung)'},
+  {id:'kual-dom', label:'Kualitatif lebih dominan (kuan sebagai pendukung)'},
+  {id:'seimbang',  label:'Keduanya setara dan saling melengkapi'},
+];
+const mf3opts = [
+  {id:'eksplorasi',  label:'Mengeksplorasi untuk membangun instrumen kuantitatif'},
+  {id:'penjelasan',  label:'Menjelaskan temuan kuantitatif yang tidak terduga'},
+  {id:'triangulasi', label:'Memvalidasi atau mengkonfirmasi temuan dari dua arah'},
+  {id:'integrasi',   label:'Menghasilkan pemahaman yang lebih komprehensif dan utuh'},
+];
+
+const MDATA = [
+  {urutan:'kual-dulu',prioritas:['kuan-dom','seimbang'],tujuan:['eksplorasi'],
+   design:'Sequential Exploratory Design',sub:'KUAL → kuan: eksplorasi dulu, lalu konfirmasi',jenis:'mix',
+   definisi:'Fase kualitatif (eksplorasi mendalam) menghasilkan tema/konstruk yang kemudian dikuantifikasi dan diuji ke sampel yang lebih besar.',
+   alur:'Fase 1: Wawancara mendalam / FGD → Identifikasi tema & konstruk → Fase 2: Kembangkan instrumen kuesioner → Survei skala besar → Analisis statistik',
+   integrasi:'Hasil kualitatif (tema) ditransformasi menjadi item kuesioner. Penjelasan di bab pembahasan harus menjembatani keduanya.',
+   contoh_alat:'Fase kualitatif: NVivo/Atlas.ti; Fase kuantitatif: SPSS/SmartPLS',
+   kapan:'Saat konstruk penelitian belum cukup terdefinisi. Instrumen yang ada belum mencerminkan konteks lokal.',
+   judul:['Pengembangan Skala Pengukuran Literasi Keuangan UMKM Berbasis Konteks Lokal: Pendekatan Sequential Exploratory','Eksplorasi Faktor Ketahanan UMKM Pasca Pandemi dan Pengujian Model Kuantitatifnya','Membangun Instrumen Pengukuran Kepuasan Nasabah Bank Syariah: Studi Kualitatif-Kuantitatif','Identifikasi Konstruk Kepatuhan Pajak UMKM dan Pengujian Empiris Model Pengaruhnya']},
+  {urutan:'kuan-dulu',prioritas:['kuan-dom','seimbang'],tujuan:['penjelasan'],
+   design:'Sequential Explanatory Design',sub:'KUAN → kual: survei dulu, lalu jelaskan dengan wawancara',jenis:'mix',
+   definisi:'Fase kuantitatif menghasilkan temuan statistik (seringkali ada yang mengejutkan). Fase kualitatif kemudian menggali mengapa temuan itu terjadi.',
+   alur:'Fase 1: Survei kuesioner → Analisis statistik → Identifikasi temuan yang perlu dijelaskan → Fase 2: Pilih partisipan purposive → Wawancara mendalam → Analisis tematik',
+   integrasi:'Peserta fase kualitatif dipilih berdasarkan hasil statistik (outlier, kelompok ekstrem). Pembahasan harus menjelaskan "mengapa angka menunjukkan itu".',
+   contoh_alat:'Fase kuantitatif: SPSS/SmartPLS; Fase kualitatif: NVivo/Atlas.ti',
+   kapan:'Ada temuan statistik yang tidak terduga atau kontradiktif. Korelasi atau pengaruh terjadi tapi mekanismenya tidak jelas.',
+   judul:['Pengaruh Kompensasi terhadap Kinerja Karyawan dan Penjelasan Kualitatifnya: Sequential Explanatory','Determinan Keputusan Investasi Saham Generasi Z: Dari Data Survei ke Wawancara Mendalam','Faktor Pemengaruh Financial Distress UMKM dan Narasi di Balik Angka','Adopsi E-Faktur dan Resistensinya: Survei Kuantitatif dan Eksplorasi Kualitatif']},
+  {urutan:'bersamaan',prioritas:['seimbang'],tujuan:['triangulasi','integrasi'],
+   design:'Concurrent Triangulation Design',sub:'KUAN + KUAL berjalan paralel, hasil dibandingkan',jenis:'mix',
+   definisi:'Data kuantitatif dan kualitatif dikumpulkan dalam waktu bersamaan secara independen, kemudian hasilnya dibandingkan untuk konfirmasi atau kontradiksi.',
+   alur:'Kuesioner + Wawancara berjalan paralel → Analisis terpisah → Tahap integrasi (comparing, contrasting, merging) → Laporan terintegrasi',
+   integrasi:'Joint display: tabel atau matriks yang menampilkan temuan KUAN dan KUAL berdampingan untuk perbandingan langsung.',
+   contoh_alat:'Kuantitatif: SPSS/R; Kualitatif: NVivo/Atlas.ti; Integrasi: tabel joint display',
+   kapan:'Ingin memvalidasi temuan dari dua arah sekaligus. Ada waktu yang cukup untuk dua pengumpulan data paralel.',
+   judul:['Kepuasan Kerja Karyawan Generasi Milenial: Survei Kuantitatif dan Narasi Kualitatif (Concurrent Triangulation)','Implementasi GCG pada Perusahaan Keluarga: Data Sekunder dan Wawancara Eksekutif','Literasi Keuangan dan Perilaku Investasi: Triangulasi Data Kuesioner dan Wawancara Mendalam']},
+  {urutan:'kuan-dulu',prioritas:['kual-dom'],tujuan:['penjelasan','integrasi'],
+   design:'Sequential Explanatory — Kual Dominan',sub:'Statistik sebagai peta, wawancara sebagai inti',jenis:'mix',
+   definisi:'Survei kuantitatif skala besar digunakan sebagai "peta" awal untuk mengidentifikasi fenomena, lalu wawancara mendalam menjadi inti penggalian makna.',
+   alur:'Fase 1: Survei pendek → Identifikasi kasus/individu menarik → Fase 2: Wawancara mendalam ekstensif → Analisis tematik/fenomenologis',
+   integrasi:'Data kuantitatif berfungsi sebagai sampling frame untuk memilih partisipan kualitatif. Pembahasan berpusat pada narasi.',
+   contoh_alat:'Fase kuantitatif: SPSS; Fase kualitatif: NVivo, Atlas.ti',
+   kapan:'Fenomena sudah teridentifikasi secara statistik, tapi pemahaman mendalam tentang pengalaman manusia di baliknya masih kurang.',
+   judul:['Di Balik Angka Kredit Macet UMKM: Survei Awal dan Narasi Pengalaman Debitur','Dari Statistik ke Cerita: Resiliensi UMKM Kuliner Pasca Pandemi','Mengapa Karyawan Bertahan? Survei Turnover Intention dan Wawancara Mendalam']},
+];
+
+// ═══════════════════════ FILTER ENGINE ═══════════════════════
+const qsel={f1:null,f2:null,f3:null};
+const lsel={f1:null,f2:null,f3:null};
+const msel={f1:null,f2:null,f3:null};
+
+function renderPills(cid, opts, sel, key, activeClass, hoverClass) {
+  const el = document.getElementById(cid);
+  el.innerHTML = '';
+  opts.forEach(o => {
+    const p = document.createElement('button');
+    p.className = 'pill ' + (sel[key]===o.id ? activeClass : hoverClass);
+    p.textContent = o.label;
+    p.type = 'button';
+    p.onclick = () => {
+      sel[key] = sel[key]===o.id ? null : o.id;
+      renderPills(cid, opts, sel, key, activeClass, hoverClass);
+    };
+    el.appendChild(p);
+  });
+}
+
+// KUANTITATIF
+function initQ() {
+  const rc = (cid,opts,key) => {
+    const el = document.getElementById(cid);
+    el.innerHTML = '';
+    opts.forEach(o => {
+      const p = document.createElement('button');
+      p.className = 'pill pq' + (qsel[key]===o.id?' aq':'');
+      p.textContent = o.label; p.type='button';
+      p.onclick=()=>{ qsel[key]=qsel[key]===o.id?null:o.id; initQ(); showQ(); };
+      el.appendChild(p);
+    });
+    [1,2,3].forEach(i=>{
+      const filled=[1,2,3].filter(j=>qsel['f'+j]).length;
+      document.getElementById('qfn'+i).className='fnum'+(qsel['f'+i]?' dq':'');
+      document.getElementById('qfn'+i).textContent=qsel['f'+i]?'✓':i;
+      document.getElementById('qfc'+i).className='filter-card'+(!qsel['f'+i]&&i-1===filled?' active-q':'');
+    });
+  };
+  rc('qf1',qf1opts,'f1'); rc('qf2',qf2opts,'f2'); rc('qf3',qf3opts,'f3');
+}
+function showQ(){
+  const w=document.getElementById('q-warn'), r=document.getElementById('q-result');
+  if(!qsel.f1||!qsel.f2||!qsel.f3){w.innerHTML='';r.innerHTML='<div class="empty"><div class="ico">⬆</div><p>Pilih ketiga filter.</p></div>';return;}
+  const res=QDATA.filter(d=>d.obj===qsel.f1&&d.scale.includes(qsel.f2)&&(d.asumsi==='na'||d.asumsi===qsel.f3));
+  w.innerHTML=(qsel.f3==='tidak'&&qsel.f1!=='sem')?'<div class="warn">⚠ Data tidak lolos asumsi parametrik. Rekomendasi disesuaikan ke <strong>non-parametrik</strong>. Pertimbangkan juga transformasi data.</div>':'';
+  if(!res.length){r.innerHTML='<div class="empty"><div class="ico">⚠</div><p>Kombinasi ini tidak ditemukan. Coba ubah filter.</p></div>';return;}
+  const bjenis=j=>({param:'<span class="badge b-param">Parametrik</span>',nonparam:'<span class="badge b-nonparam">Non-parametrik</span>',sem:'<span class="badge b-sem">SEM/PLS</span>',ts:'<span class="badge b-ts">Time Series</span>'}[j]||'');
+  const cards=res.map(d=>{
+    const jl=d.judul.map((j,i)=>`<li data-n="${i+1}">${j}</li>`).join('');
+    return `<div class="rcard"><div class="rcard-hd"><div><div class="rcard-name">${d.tool}</div><div class="rcard-sub">${d.sub}</div></div>${bjenis(d.jenis)}</div>
+    <div class="rcard-grid">
+      <div class="rsec"><div class="slabel">Syarat & Asumsi</div><div class="scontent">${d.syarat}</div></div>
+      <div class="rsec"><div class="slabel">Software</div><div class="scontent">${d.software}</div></div>
+      <div class="rsec fullb"><div class="slabel">Catatan Penting</div><div class="scontent">${d.catatan}</div></div>
+      <div class="rsec full"><div class="slabel">💡 Contoh Judul Skripsi (Ekonomi Bisnis & Akuntansi)</div><ul class="jlist jq">${jl}</ul></div>
+    </div></div>`;
+  }).join('');
+  r.innerHTML=`<div class="rh"><div class="rt">Rekomendasi Alat Analisis</div><div class="rc">${res.length} alat ditemukan</div></div><div class="rcards">${cards}</div>`;
+}
+
+// KUALITATIF
+function initL() {
+  const rc=(cid,opts,key)=>{
+    const el=document.getElementById(cid); el.innerHTML='';
+    opts.forEach(o=>{
+      const p=document.createElement('button');
+      p.className='pill pl'+(lsel[key]===o.id?' al':'');
+      p.textContent=o.label; p.type='button';
+      p.onclick=()=>{lsel[key]=lsel[key]===o.id?null:o.id;initL();showL();};
+      el.appendChild(p);
+    });
+    [1,2,3].forEach(i=>{
+      const filled=[1,2,3].filter(j=>lsel['f'+j]).length;
+      document.getElementById('lfn'+i).className='fnum'+(lsel['f'+i]?' dl':'');
+      document.getElementById('lfn'+i).textContent=lsel['f'+i]?'✓':i;
+      document.getElementById('lfc'+i).className='filter-card'+(!lsel['f'+i]&&i-1===filled?' active-l':'');
+    });
+  };
+  rc('lf1',lf1opts,'f1'); rc('lf2',lf2opts,'f2'); rc('lf3',lf3opts,'f3');
+}
+function showL(){
+  const w=document.getElementById('l-warn'),r=document.getElementById('l-result');
+  if(!lsel.f1||!lsel.f2||!lsel.f3){w.innerHTML='';r.innerHTML='<div class="empty"><div class="ico">⬆</div><p>Pilih ketiga filter.</p></div>';return;}
+  const res=LDATA.filter(d=>{
+    const objOk=d.obj===lsel.f1||!lsel.f1;
+    const srcOk=d.sumber.includes(lsel.f2)||!lsel.f2;
+    const tujOk=d.tujuan.includes(lsel.f3)||!lsel.f3;
+    return objOk&&srcOk&&tujOk;
+  });
+  w.innerHTML='';
+  if(!res.length){r.innerHTML='<div class="empty"><div class="ico">⚠</div><p>Tradisi tidak ditemukan untuk kombinasi ini. Analisis Tematik (Braun & Clarke) biasanya bisa menjadi pilihan fleksibel untuk hampir semua konteks kualitatif.</p></div>';return;}
+  const cards=res.map(d=>{
+    const jl=d.judul.map((j,i)=>`<li data-n="${i+1}">${j}</li>`).join('');
+    return `<div class="rcard"><div class="rcard-hd"><div><div class="rcard-name">${d.tool}</div><div class="rcard-sub">${d.sub}</div></div><span class="badge b-kuali">Kualitatif</span></div>
+    <div class="rcard-grid">
+      <div class="rsec"><div class="slabel">Tradisi / Paradigma</div><div class="scontent">${d.tradisi}</div></div>
+      <div class="rsec"><div class="slabel">Software</div><div class="scontent">${d.software}</div></div>
+      <div class="rsec fullb"><div class="slabel">Proses Analisis</div><div class="scontent">${d.proses}</div></div>
+      <div class="rsec fullb"><div class="slabel">Strategi Keabsahan</div><div class="scontent">${d.keabsahan}</div></div>
+      <div class="rsec full"><div class="slabel">💡 Contoh Judul Skripsi (Ekonomi Bisnis & Akuntansi)</div><ul class="jlist jl">${jl}</ul></div>
+    </div></div>`;
+  }).join('');
+  r.innerHTML=`<div class="rh"><div class="rt">Rekomendasi Tradisi Penelitian</div><div class="rc">${res.length} tradisi sesuai</div></div><div class="rcards">${cards}</div>`;
+}
+
+// MIXED METHODS
+function initM(){
+  const rc=(cid,opts,key)=>{
+    const el=document.getElementById(cid); el.innerHTML='';
+    opts.forEach(o=>{
+      const p=document.createElement('button');
+      p.className='pill pm'+(msel[key]===o.id?' am':'');
+      p.textContent=o.label; p.type='button';
+      p.onclick=()=>{msel[key]=msel[key]===o.id?null:o.id;initM();showM();};
+      el.appendChild(p);
+    });
+    [1,2,3].forEach(i=>{
+      const filled=[1,2,3].filter(j=>msel['f'+j]).length;
+      document.getElementById('mfn'+i).className='fnum'+(msel['f'+i]?' dm':'');
+      document.getElementById('mfn'+i).textContent=msel['f'+i]?'✓':i;
+      document.getElementById('mfc'+i).className='filter-card'+(!msel['f'+i]&&i-1===filled?' active-m':'');
+    });
+  };
+  rc('mf1',mf1opts,'f1'); rc('mf2',mf2opts,'f2'); rc('mf3',mf3opts,'f3');
+}
+function showM(){
+  const w=document.getElementById('m-warn'),r=document.getElementById('m-result');
+  if(!msel.f1||!msel.f2||!msel.f3){w.innerHTML='';r.innerHTML='<div class="empty"><div class="ico">⬆</div><p>Pilih ketiga filter untuk melihat rekomendasi desain.</p></div>';return;}
+  const res=MDATA.filter(d=>{
+    const uOk=d.urutan===msel.f1;
+    const pOk=d.prioritas.includes(msel.f2);
+    const tOk=d.tujuan.includes(msel.f3);
+    return uOk&&pOk&&tOk;
+  });
+  w.innerHTML='<div class="mix-box">ℹ Pastikan integrasi antara data kuantitatif dan kualitatif sudah direncanakan sejak desain penelitian — bukan ditambahkan setelah pengumpulan data selesai.</div>';
+  if(!res.length){r.innerHTML='<div class="empty"><div class="ico">⚠</div><p>Desain spesifik tidak ditemukan. Coba ubah prioritas atau tujuan integrasi. Konsultasikan dengan pembimbing untuk desain yang paling sesuai.</p></div>';return;}
+  const cards=res.map(d=>{
+    const jl=d.judul.map((j,i)=>`<li data-n="${i+1}">${j}</li>`).join('');
+    return `<div class="rcard"><div class="rcard-hd"><div><div class="rcard-name">${d.design}</div><div class="rcard-sub">${d.sub}</div></div><span class="badge b-mix">Mixed Methods</span></div>
+    <div class="rcard-grid">
+      <div class="rsec fullb"><div class="slabel">Definisi & Logika</div><div class="scontent">${d.definisi}</div></div>
+      <div class="rsec fullb"><div class="slabel">Alur Penelitian</div><div class="scontent">${d.alur}</div></div>
+      <div class="rsec"><div class="slabel">Cara Integrasi Data</div><div class="scontent">${d.integrasi}</div></div>
+      <div class="rsec"><div class="slabel">Software</div><div class="scontent">${d.contoh_alat}</div></div>
+      <div class="rsec fullb"><div class="slabel">Kapan Tepat Digunakan</div><div class="scontent">${d.kapan}</div></div>
+      <div class="rsec full"><div class="slabel">💡 Contoh Judul Skripsi (Ekonomi Bisnis & Akuntansi)</div><ul class="jlist jm">${jl}</ul></div>
+    </div></div>`;
+  }).join('');
+  r.innerHTML=`<div class="rh"><div class="rt">Rekomendasi Desain Mixed Methods</div><div class="rc">${res.length} desain sesuai</div></div><div class="rcards">${cards}</div>`;
+}
+
+// INIT ALL
+initQ(); showQ();
+initL(); showL();
+initM(); showM();
+</script>
+</body>
+</html>
